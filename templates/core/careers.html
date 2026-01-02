@@ -1,0 +1,1030 @@
+{% extends 'base-core.html' %}
+
+{% load static %}
+
+{% block title %}Careers{% endblock title %}
+
+{% block head %}
+<style>
+    /* Custom Styles with Dark Theme Colors */
+    .careers-hero {
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .breadcrumbs-light ol {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .breadcrumbs-light li {
+        margin-right: 10px;
+    }
+
+    .breadcrumbs-light li:not(:last-child):after {
+        content: "/";
+        margin-left: 10px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .careers-icon-wrapper {
+        position: relative;
+    }
+
+    .careers-icon-large {
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .careers-icon-large i {
+        font-size: 80px;
+        color: var(--contrast-color);
+    }
+
+    .floating-badges {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        background: var(--surface-color);
+        padding: 30px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+        margin-top: 10px;
+    }
+
+    .title-divider {
+        width: 60px;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 15px 0;
+    }
+
+    /* Benefit Items */
+    .benefit-item-custom {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: var(--surface-color);
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        transition: all 0.3s ease;
+    }
+
+    .benefit-item-custom:hover {
+        transform: translateX(5px);
+        border-color: var(--accent-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .benefit-item-custom i {
+        color: var(--accent-color);
+        font-size: 20px;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .benefit-item-custom span {
+        color: var(--default-color);
+        font-weight: 500;
+    }
+
+    /* Job Cards */
+    .job-card-custom {
+        background: var(--surface-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        height: 100%;
+    }
+
+    .job-card-custom:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .job-header-custom {
+        padding: 25px 25px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .job-badge-custom {
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        color: var(--accent-color);
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .job-type-custom {
+        background: color-mix(in srgb, #10b981, transparent 90%);
+        color: #10b981;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border: 1px solid color-mix(in srgb, #10b981, transparent 80%);
+    }
+
+    .job-body-custom {
+        padding: 20px 25px 25px;
+    }
+
+    .job-meta-custom {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 15px 0;
+    }
+
+    .meta-item-custom {
+        display: flex;
+        align-items: center;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+        font-size: 0.9rem;
+    }
+
+    .meta-item-custom i {
+        margin-right: 5px;
+    }
+
+    .job-requirements-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .job-requirements-list li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+    }
+
+    .job-requirements-list li:before {
+        content: "•";
+        color: var(--accent-color);
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .job-actions-custom {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .btn-apply-custom {
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        border: none;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-apply-custom:hover {
+        background: color-mix(in srgb, var(--accent-color), black 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-details-custom {
+        background: transparent;
+        color: var(--accent-color);
+        border: 1px solid var(--accent-color);
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-details-custom:hover {
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        transform: translateY(-2px);
+    }
+
+    /* No Openings Card */
+    .no-openings-card {
+        background: var(--surface-color);
+        padding: 60px 40px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .no-openings-icon {
+        width: 80px;
+        height: 80px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        border: 2px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .no-openings-icon i {
+        font-size: 36px;
+        color: var(--accent-color);
+    }
+
+    /* Feature Cards */
+    .feature-card-custom {
+        background: var(--surface-color);
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        height: 100%;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card-custom:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .feature-icon-custom {
+        width: 70px;
+        height: 70px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        border: 2px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .feature-icon-custom i {
+        font-size: 32px;
+        color: var(--accent-color);
+    }
+
+    /* Application Modal */
+    .modal-content-custom {
+        background: var(--surface-color);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .modal-header-custom {
+        border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        padding: 25px;
+    }
+
+    .modal-title-custom {
+        color: var(--heading-color);
+    }
+
+    .btn-close-custom {
+        filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+    .modal-body-custom {
+        padding: 25px;
+    }
+
+    .form-label-custom {
+        color: var(--default-color);
+        margin-bottom: 8px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .form-control-custom,
+    .form-select-custom {
+        background: color-mix(in srgb, var(--default-color), transparent 95%);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+        color: var(--default-color);
+        padding: 12px 15px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control-custom:focus,
+    .form-select-custom:focus {
+        background: color-mix(in srgb, var(--default-color), transparent 92%);
+        border-color: var(--accent-color);
+        color: var(--default-color);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .form-text-custom {
+        color: color-mix(in srgb, var(--default-color), transparent 40%);
+        font-size: 0.85rem;
+    }
+
+    .form-check-label-custom {
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+        font-size: 0.9rem;
+    }
+
+    .modal-footer-custom {
+        border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        padding: 20px 25px;
+    }
+
+    .final-cta {
+        padding: 80px 0;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .bg-light {
+        background-color: var(--surface-color) !important;
+    }
+
+    /* Fix for shadow-sm class */
+    .border-0.shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-primary:hover {
+        background-color: color-mix(in srgb, var(--accent-color), black 10%);
+        border-color: color-mix(in srgb, var(--accent-color), black 10%);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-primary {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-light {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+        border-color: var(--contrast-color);
+    }
+
+    .btn-light:hover {
+        background-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        border-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-light {
+        border-color: var(--contrast-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-light:hover {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+    }
+
+    .badge.bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .badge.bg-success {
+        background-color: color-mix(in srgb, #10b981, transparent 20%) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-white {
+        background-color: var(--contrast-color) !important;
+        color: var(--accent-color) !important;
+    }
+
+    @media (max-width: 768px) {
+        .careers-hero {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .careers-icon-wrapper {
+            margin-top: 40px;
+        }
+
+        .hero-actions .btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .hero-actions .btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .job-actions-custom {
+            flex-direction: column;
+        }
+
+        .job-meta-custom {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+
+    /* Dark theme specific text colors */
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    .text-muted {
+        color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+    }
+
+    /* Ensure proper text contrast for all cards */
+    .card {
+        background-color: var(--surface-color) !important;
+        border-color: color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .card-body {
+        color: var(--default-color) !important;
+    }
+
+    .card-title,
+    .card-body h4,
+    .card-body h5 {
+        color: var(--heading-color) !important;
+    }
+
+    .card-text,
+    .card-body p {
+        color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    }
+
+    .lead {
+        color: color-mix(in srgb, var(--default-color), transparent 10%) !important;
+    }
+
+    /* Fix inline style overrides in HTML */
+    .careers-hero,
+    .final-cta {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%) !important;
+    }
+
+    @media (max-width: 576px) {
+        .stat-card {
+            padding: 1rem !important;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .stat-value {
+            font-size: 1.55rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 0.25rem !important;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem !important;
+            margin-top: 0.25rem !important;
+            line-height: 1.2 !important;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .stat-value {
+            font-size: 1.45rem !important;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem !important;
+        }
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+
+<main class="main">
+
+    <!-- Hero Section -->
+    <section class="careers-hero section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8" data-aos="fade-right">
+                    <div class="hero-content text-white">
+                        <nav class="breadcrumbs-light mb-4">
+                            <ol>
+                                <li><a href="{% url 'core:index' %}" class="text-white-50">Home</a></li>
+                                <li class="current text-white">Careers</li>
+                            </ol>
+                        </nav>
+                        <h1 class="display-4 fw-bold mb-4">Careers</h1>
+                        <p class="lead mb-4">Join our team of established Telecom and IT professionals. Be part of an
+                            organization that sets the gold standard in technology consulting and business partnering.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#current-openings" class="btn btn-light btn-lg me-3">
+                                <i class="bi bi-briefcase me-2"></i>View Openings
+                            </a>
+                            <a href="#general-application" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-person-plus me-2"></i>General Application
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-left">
+                    <div class="careers-icon-wrapper">
+                        <div class="careers-icon-large">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div class="floating-badges">
+                            <span class="badge bg-white text-primary">Industry Veterans</span>
+                            <span class="badge bg-white text-primary mt-2">7+ Decades Experience</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="quick-stats section">
+        <div class="container">
+            <div class="row g-4" data-aos="fade-up">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word; line-height: 1.2;">7+</div>
+                        <div class="stat-label">Decades Combined Experience</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word; line-height: 1.2;">Fortune 100
+                        </div>
+                        <div class="stat-label">Industry Background</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word; line-height: 1.2;">Global</div>
+                        <div class="stat-label">Network Projects</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word; line-height: 1.2;">Continuous
+                        </div>
+                        <div class="stat-label">Training & Development</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Careers Introduction -->
+    <section class="careers-introduction section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">Build Your Career with Industry Leaders</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <div class="overview-content">
+                        <p class="lead mb-4">At AthenaNG Consulting, we believe our success is due in large part to the
+                            integrity and quality of our team. We are always looking for talented professionals to join
+                            our growing organization.</p>
+                        <p>Work alongside Telecom and IT veterans with backgrounds in both industry and
+                            entrepreneurship, bringing decades of collective business experience to every project.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="service-visual">
+                        <div class="visual-card">
+                            <img src="{% static 'core/assets/img/about/about-4.jpg' %}" alt="Team Collaboration"
+                                class="img-fluid rounded-3 shadow">
+                            <!-- <div class="visual-overlay">
+                                <div class="overlay-content">
+                                    <h4>Team Excellence</h4>
+                                    <p>Collaborate with industry veterans</p>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Why Join Our Team?</h2>
+                <p class="lead">Experience career growth with exceptional benefits and opportunities</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-6">
+                    <div class="benefit-item-custom">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Work with Fortune 100 Telecom Industry Veterans</span>
+                    </div>
+                    <div class="benefit-item-custom">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>7+ Decades of Combined Industry Expertise</span>
+                    </div>
+                    <div class="benefit-item-custom">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Cutting-Edge Technology Projects</span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="benefit-item-custom">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Continuous Training and Development</span>
+                    </div>
+                    <div class="benefit-item-custom">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Global Network Footprint</span>
+                    </div>
+                    <div class="benefit-item-custom">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Gold Standard Business Partnering</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Openings -->
+    <section id="current-openings" class="current-openings section">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Current Openings</h2>
+                <p class="lead">Join our team of technology experts and industry veterans</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            {% if job_openings %}
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                {% for job in job_openings %}
+                <div class="col-lg-6">
+                    <div class="job-card-custom">
+                        <div class="job-header-custom">
+                            <span class="job-badge-custom">{{ job.department }}</span>
+                            <span class="job-type-custom">{{ job.type }}</span>
+                        </div>
+                        <div class="job-body-custom">
+                            <h3 class="mb-3">{{ job.title }}</h3>
+                            <div class="job-meta-custom">
+                                <span class="meta-item-custom">
+                                    <i class="bi bi-geo-alt"></i> {{ job.location }}
+                                </span>
+                                <span class="meta-item-custom">
+                                    <i class="bi bi-briefcase"></i> {{ job.experience }} experience
+                                </span>
+                                <span class="meta-item-custom">
+                                    <i class="bi bi-calendar"></i> Posted: {{ job.posted_date }}
+                                </span>
+                            </div>
+                            <p class="mb-4">{{ job.description }}</p>
+
+                            <div class="job-requirements">
+                                <h5 class="mb-3">Key Requirements:</h5>
+                                <ul class="job-requirements-list">
+                                    {% for requirement in job.requirements %}
+                                    <li>{{ requirement }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <div class="job-actions-custom">
+                                <button class="btn-apply-custom apply-btn" data-job-id="{{ job.id }}"
+                                    data-job-title="{{ job.title }}">
+                                    Apply Now
+                                </button>
+                                <button class="btn-details-custom view-details-btn" data-job-id="{{ job.id }}">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-8">
+                    <div class="no-openings-card">
+                        <div class="no-openings-icon">
+                            <i class="bi bi-briefcase"></i>
+                        </div>
+                        <h3 class="mb-3">No Current Openings</h3>
+                        <p class="mb-4">There are no job openings at the moment. Please check back later or send your
+                            resume to <a href="mailto:careers@athenang.com">careers@athenang.com</a> for future
+                            opportunities.</p>
+                        <a href="#general-application" class="btn-apply-custom">
+                            Submit General Application
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Why Join Us -->
+    <section class="why-join-section section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Why Join AthenaNG Consulting?</h2>
+                <p class="lead">Be part of an organization that values integrity, quality, and innovation</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card-custom">
+                        <div class="feature-icon-custom">
+                            <i class="bi bi-award"></i>
+                        </div>
+                        <h4 class="mb-3">Gold Standard</h4>
+                        <p class="mb-0">Work for a company committed to setting the gold standard in business partnering
+                            and quality delivery.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card-custom">
+                        <div class="feature-icon-custom">
+                            <i class="bi bi-lightbulb"></i>
+                        </div>
+                        <h4 class="mb-3">Innovation Focus</h4>
+                        <p class="mb-0">Continuously work with cutting-edge technology and stay at the forefront of
+                            industry innovation.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card-custom">
+                        <div class="feature-icon-custom">
+                            <i class="bi bi-globe"></i>
+                        </div>
+                        <h4 class="mb-3">Global Impact</h4>
+                        <p class="mb-0">Work on projects with global reach, serving clients across multiple continents
+                            and industries.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card-custom">
+                        <div class="feature-icon-custom">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h4 class="mb-3">Expert Team</h4>
+                        <p class="mb-0">Learn from and collaborate with industry veterans who have decades of combined
+                            experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- General Application -->
+    <section id="general-application" class="general-application section">
+        <div class="container">
+            <div class="row align-items-center" data-aos="fade-up">
+                <div class="col-lg-8">
+                    <h2 class="mb-3">Don't See Your Perfect Role?</h2>
+                    <p class="mb-0">We're always interested in meeting talented professionals. Even if you don't see an
+                        exact match for your skills, we encourage you to submit a general application. We'll keep your
+                        information on file for future opportunities.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <button class="btn-apply-custom" id="generalApplicationBtn" style="padding: 12px 30px;">
+                        Submit General Application
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Modal -->
+    <div class="modal fade" id="applicationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title modal-title-custom" id="modalJobTitle">Apply for Position</h5>
+                    <button type="button" class="btn-close btn-close-custom" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-custom">
+                    <form id="jobApplicationForm">
+                        <input type="hidden" id="jobId" name="job_id">
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label-custom">First Name *</label>
+                                <input type="text" class="form-control form-control-custom" id="firstName"
+                                    name="first_name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label-custom">Last Name *</label>
+                                <input type="text" class="form-control form-control-custom" id="lastName"
+                                    name="last_name" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label-custom">Email Address *</label>
+                                <input type="email" class="form-control form-control-custom" id="email" name="email"
+                                    required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label-custom">Phone Number *</label>
+                                <input type="tel" class="form-control form-control-custom" id="phone" name="phone"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="linkedin" class="form-label-custom">LinkedIn Profile URL</label>
+                            <input type="url" class="form-control form-control-custom" id="linkedin" name="linkedin">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="resume" class="form-label-custom">Upload Resume (PDF, DOC, DOCX) *</label>
+                            <input type="file" class="form-control form-control-custom" id="resume" name="resume"
+                                accept=".pdf,.doc,.docx" required>
+                            <div class="form-text form-text-custom">Maximum file size: 5MB</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="coverLetter" class="form-label-custom">Cover Letter</label>
+                            <textarea class="form-control form-control-custom" id="coverLetter" name="cover_letter"
+                                rows="4"
+                                placeholder="Tell us why you're interested in this position and what makes you a great fit..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="consent" name="consent" required>
+                                <label class="form-check-label form-check-label-custom" for="consent">
+                                    I consent to having AthenaNG Consulting store and process my personal data for
+                                    recruitment purposes.
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer modal-footer-custom">
+                    <button type="button" class="btn-details-custom" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-apply-custom" id="submitApplication">Submit Application</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final CTA -->
+    <section class="final-cta section">
+        <div class="container">
+            <div class="row align-items-center" data-aos="fade-up">
+                <div class="col-lg-8">
+                    <div class="cta-content text-white">
+                        <h2 class="mb-3">Ready to Join Our Team of Technology Experts?</h2>
+                        <p class="lead mb-4">Take the next step in your career with an organization that values quality,
+                            integrity, and innovation. Join industry veterans working on cutting-edge technology
+                            solutions.</p>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-envelope me-3"></i>
+                                <span>careers@athenang.com</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-telephone me-3"></i>
+                                <span>305-407-9223</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="mailto:careers@athenang.com" class="btn btn-light btn-lg px-5">
+                        <i class="bi bi-envelope me-2"></i>Email Your Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Application modal handling
+        const applicationModal = new bootstrap.Modal(document.getElementById('applicationModal'));
+        const modalJobTitle = document.getElementById('modalJobTitle');
+        const jobIdInput = document.getElementById('jobId');
+
+        // Apply button click handlers
+        document.querySelectorAll('.apply-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const jobId = this.getAttribute('data-job-id');
+                const jobTitle = this.getAttribute('data-job-title');
+
+                modalJobTitle.textContent = `Apply for: ${jobTitle}`;
+                jobIdInput.value = jobId;
+
+                // Reset form
+                document.getElementById('jobApplicationForm').reset();
+                applicationModal.show();
+            });
+        });
+
+        // View details button handlers
+        document.querySelectorAll('.view-details-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const jobId = this.getAttribute('data-job-id');
+                // In a real application, this would navigate to a detailed job page
+                alert(`Job details page for ID: ${jobId} would open here.`);
+            });
+        });
+
+        // General application button
+        document.getElementById('generalApplicationBtn').addEventListener('click', function () {
+            modalJobTitle.textContent = 'General Application';
+            jobIdInput.value = 'general';
+            document.getElementById('jobApplicationForm').reset();
+            applicationModal.show();
+        });
+
+        // Form submission handler
+        document.getElementById('submitApplication').addEventListener('click', function () {
+            const form = document.getElementById('jobApplicationForm');
+
+            if (form.checkValidity()) {
+                // In a real application, you would submit the form via AJAX
+                // For now, we'll just show a success message
+                applicationModal.hide();
+                alert('Thank you for your application! We will review your submission and get back to you soon.');
+            } else {
+                form.reportValidity();
+            }
+        });
+    });
+</script>
+{% endblock script %}

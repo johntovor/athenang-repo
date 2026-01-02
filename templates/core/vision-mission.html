@@ -1,0 +1,762 @@
+{% extends 'base-core.html' %}
+
+{% load static %}
+
+{% block title %}Vision & Mission - AthenaNG Consulting{% endblock title %}
+
+{% block head %}
+<style>
+    /* Custom Styles with Dark Theme Colors */
+    .vision-hero {
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .breadcrumbs-light ol {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .breadcrumbs-light li {
+        margin-right: 10px;
+    }
+
+    .breadcrumbs-light li:not(:last-child):after {
+        content: "/";
+        margin-left: 10px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .vision-icon-wrapper {
+        position: relative;
+    }
+
+    .vision-icon-large {
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .vision-icon-large i {
+        font-size: 80px;
+        color: var(--contrast-color);
+    }
+
+    .floating-badges {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        background: var(--surface-color);
+        padding: 30px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+        margin-top: 10px;
+    }
+
+    .title-divider {
+        width: 60px;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 15px 0;
+    }
+
+    .feature-icon-wrapper {
+        display: inline-block;
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .feature-icon i {
+        font-size: 30px;
+        color: var(--accent-color);
+    }
+
+    /* Fix for feature cards - override Bootstrap card styles */
+    .feature-card.card {
+        background-color: var(--surface-color) !important;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .feature-card.card .card-body {
+        background-color: transparent !important;
+    }
+
+    .feature-card.card .card-title {
+        color: var(--heading-color) !important;
+    }
+
+    .feature-card.card .card-text {
+        color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    }
+
+    .benefit-item {
+        padding: 15px;
+        background: var(--surface-color);
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        margin-bottom: 15px;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .benefit-icon i {
+        font-size: 24px;
+        color: var(--accent-color);
+    }
+
+    .process-step {
+        position: relative;
+        padding-left: 80px;
+    }
+
+    .step-number {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 60px;
+        height: 60px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--contrast-color);
+        font-size: 1.5rem;
+        font-weight: bold;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .value-card-custom {
+        background: var(--surface-color);
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        height: 100%;
+    }
+
+    .value-card-custom:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .value-icon-large {
+        width: 80px;
+        height: 80px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        border: 2px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .value-icon-large i {
+        font-size: 36px;
+        color: var(--accent-color);
+    }
+
+    .approach-image {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .testimonial {
+        position: relative;
+        padding: 30px;
+        background: color-mix(in srgb, var(--default-color), transparent 95%);
+        border-radius: 10px;
+        border-left: 4px solid var(--accent-color);
+    }
+
+    .testimonial i {
+        position: absolute;
+        top: -20px;
+        left: 20px;
+        color: var(--accent-color);
+    }
+
+    .final-cta {
+        padding: 80px 0;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .bg-light {
+        background-color: var(--surface-color) !important;
+    }
+
+    /* Fix for shadow-sm class */
+    .border-0.shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-primary:hover {
+        background-color: color-mix(in srgb, var(--accent-color), black 10%);
+        border-color: color-mix(in srgb, var(--accent-color), black 10%);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-primary {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-light {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+        border-color: var(--contrast-color);
+    }
+
+    .btn-light:hover {
+        background-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        border-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-light {
+        border-color: var(--contrast-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-light:hover {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+    }
+
+    .badge.bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .badge.bg-success {
+        background-color: color-mix(in srgb, #10b981, transparent 20%) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-white {
+        background-color: var(--contrast-color) !important;
+        color: var(--accent-color) !important;
+    }
+
+    @media (max-width: 768px) {
+        .vision-hero {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .vision-icon-wrapper {
+            margin-top: 40px;
+        }
+
+        .hero-actions .btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .hero-actions .btn:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    /* Dark theme specific text colors */
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    .text-muted {
+        color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+    }
+
+    /* Ensure proper text contrast for all cards */
+    .card {
+        background-color: var(--surface-color) !important;
+        border-color: color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .card-body {
+        color: var(--default-color) !important;
+    }
+
+    .card-title,
+    .card-body h4,
+    .card-body h5 {
+        color: var(--heading-color) !important;
+    }
+
+    .card-text,
+    .card-body p {
+        color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    }
+
+    .lead {
+        color: color-mix(in srgb, var(--default-color), transparent 10%) !important;
+    }
+
+    /* Fix inline style overrides in HTML */
+    .vision-hero,
+    .approach-image,
+    .final-cta {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%) !important;
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+
+<main class="main">
+
+    <!-- Hero Section -->
+    <section class="vision-hero section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8" data-aos="fade-right">
+                    <div class="hero-content text-white">
+                        <nav class="breadcrumbs-light mb-4">
+                            <ol>
+                                <li><a href="{% url 'core:index' %}" class="text-white-50">Home</a></li>
+                                <li><a href="#" class="text-white-50">About Us</a></li>
+                                <li class="current text-white">Vision & Mission</li>
+                            </ol>
+                        </nav>
+                        <h1 class="display-4 fw-bold mb-4">Vision & Mission</h1>
+                        <p class="lead mb-4">Our commitment to enhancing network quality through innovative, reliable,
+                            and cost-effective solutions that significantly reduce total cost of ownership for all our
+                            clients.</p>
+                        <div class="hero-actions">
+                            <a href="#vision-details" class="btn btn-light btn-lg me-3">
+                                <i class="bi bi-eye me-2"></i>Our Vision
+                            </a>
+                            <a href="#mission-details" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-bullseye me-2"></i>Our Mission
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-left">
+                    <div class="vision-icon-wrapper">
+                        <div class="vision-icon-large">
+                            <i class="bi bi-stars"></i>
+                        </div>
+                        <div class="floating-badges">
+                            <span class="badge bg-white text-primary">7+ Decades Experience</span>
+                            <span class="badge bg-white text-primary mt-2">Fortune 100 Partner</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="quick-stats section">
+        <div class="container">
+            <div class="row g-4" data-aos="fade-up">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">70+</div>
+                        <div class="stat-label">Years Combined Expertise</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">580+</div>
+                        <div class="stat-label">Global Clients</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">40%</div>
+                        <div class="stat-label">Cost Reduction</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Client Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision Details -->
+    <section id="vision-details" class="vision-details section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">Our Vision</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <div class="overview-content">
+                        <p class="lead mb-4">Enhancing Network Quality Through Innovation</p>
+                        <p>Our vision is to enhance the quality of service of networks with innovative, reliable, cost
+                            effective & beneficial solutions through the use of cutting edge technology that helps to
+                            reduce our clients' total cost of ownership.</p>
+                        <p>We strive to be the leading provider of technology solutions that transform how businesses
+                            operate, connect, and grow in an increasingly digital world.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="service-visual">
+                        <div class="visual-card">
+                            <img src="{% static 'core/assets/img/about/about-4.jpg' %}"
+                                alt="Vision Illustration" class="img-fluid rounded-3 shadow">
+                            <!-- <div class="visual-overlay">
+                                <div class="overlay-content">
+                                    <h4>Innovation Driven</h4>
+                                    <p>Cutting-edge technology solutions</p>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision Features -->
+    <section class="vision-features section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Vision Pillars</h2>
+                <p class="lead">The foundation of our vision for technology transformation</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon-wrapper mb-4">
+                                <div class="feature-icon">
+                                    <i class="bi bi-lightning-charge-fill"></i>
+                                </div>
+                            </div>
+                            <h4 class="card-title mb-3">Innovative Solutions</h4>
+                            <p class="card-text">Leveraging cutting-edge technology to solve complex network challenges
+                                and drive digital transformation.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon-wrapper mb-4">
+                                <div class="feature-icon">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                            </div>
+                            <h4 class="card-title mb-3">Reliable Performance</h4>
+                            <p class="card-text">Ensuring network stability and consistent quality of service through
+                                proven methodologies and best practices.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon-wrapper mb-4">
+                                <div class="feature-icon">
+                                    <i class="bi bi-cash-coin"></i>
+                                </div>
+                            </div>
+                            <h4 class="card-title mb-3">Cost Effective</h4>
+                            <p class="card-text">Reducing total cost of ownership while maximizing ROI through efficient
+                                solutions and strategic planning.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Details -->
+    <section id="mission-details" class="mission-details section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2" data-aos="fade-left">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">Our Mission</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <div class="overview-content">
+                        <p class="lead mb-4">Delivering Complete Lifecycle Solutions</p>
+                        <p>Our objective is to provide our customers with entire lifecycle solutions that can be readily
+                            deployed and expand their networks quickly and efficiently in the most feature-rich and
+                            cost-effective way.</p>
+                        <p>We are committed to setting the gold standard in business partnering and leverage our
+                            expertise and best-in-class execution to deliver quality, integrity and performance to our
+                            clients and partners.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1" data-aos="fade-right">
+                    <div class="service-visual">
+                        <div class="visual-card">
+                            <img src="{% static 'core/assets/img/about/about-4.jpg' %}" alt="Mission Illustration"
+                                class="img-fluid rounded-3 shadow">
+                            <!-- <div class="visual-overlay">
+                                <div class="overlay-content">
+                                    <h4>Team Excellence</h4>
+                                    <p>Decades of combined expertise</p>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Objectives -->
+    <section class="mission-objectives section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Mission Objectives</h2>
+                <p class="lead">Key focus areas that drive our mission forward</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-6">
+                    <div class="benefit-item d-flex align-items-start mb-4">
+                        <div class="benefit-icon me-3">
+                            <i class="bi bi-check-circle-fill text-primary"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h5 class="mb-2">Team Integrity & Quality</h5>
+                            <p class="mb-0">AthenaNG Consulting's success is due in large part to the integrity and
+                                quality of our team. We are a team of established Telecom and IT professionals with
+                                backgrounds in both industry and entrepreneurship.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="benefit-item d-flex align-items-start mb-4">
+                        <div class="benefit-icon me-3">
+                            <i class="bi bi-check-circle-fill text-primary"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h5 class="mb-2">Efficient Network Expansion</h5>
+                            <p class="mb-0">We provide our clients with emerging and cutting edge solutions required to
+                                operate, deploy and expand their networks quickly and efficiently in the most
+                                feature-rich and cost-effective way.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="benefit-item d-flex align-items-start mb-4">
+                        <div class="benefit-icon me-3">
+                            <i class="bi bi-check-circle-fill text-primary"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h5 class="mb-2">Customer-Centric Solutions</h5>
+                            <p class="mb-0">Success for us means listening to our customers, understanding their
+                                requirements and then working to find solutions that satisfy these needs with
+                                exceptional service and support.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="benefit-item d-flex align-items-start mb-4">
+                        <div class="benefit-icon me-3">
+                            <i class="bi bi-check-circle-fill text-primary"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h5 class="mb-2">Continuous Innovation</h5>
+                            <p class="mb-0">We continuously invest in our employees and technology to ensure we are at
+                                the forefront of innovation and competition, delivering cutting-edge solutions to our
+                                clients.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="core-values section">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Our Core Values</h2>
+                <p class="lead">The guiding principles that define who we are and how we work</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-card-custom text-center">
+                        <div class="value-icon-large">
+                            <i class="bi bi-award-fill"></i>
+                        </div>
+                        <h3 class="mb-3">Gold Standard Partnership</h3>
+                        <p>We are committed to setting the gold standard in business partnering and leverage our
+                            expertise and best-in-class execution to deliver quality, integrity and performance to our
+                            clients and partners.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-card-custom text-center">
+                        <div class="value-icon-large">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <h3 class="mb-3">Continuous Improvement</h3>
+                        <p>Our approach is simple: we refuse to compromise, particularly when it comes to quality. We
+                            set high standards and we aim to surpass them through continuous innovation and improvement.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-card-custom text-center">
+                        <div class="value-icon-large">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <h3 class="mb-3">Customer-Centric Focus</h3>
+                        <p>At AthenaNG our goal is your complete satisfaction. Success for us means listening to our
+                            customers, understanding their requirements and then working to find solutions that satisfy
+                            these needs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Story -->
+    <section class="success-story section bg-light">
+        <div class="container">
+            <div class="success-card rounded-4 overflow-hidden shadow-lg">
+                <div class="row g-0">
+                    <div class="col-lg-8">
+                        <div class="success-content p-5">
+                            <div class="d-flex align-items-center mb-4">
+                                <span class="badge bg-primary me-3">Client Testimonial</span>
+                                <span class="badge bg-success">Fortune 100 Client</span>
+                            </div>
+                            <h2 class="mb-4">Built on Trust & Excellence</h2>
+                            <p class="lead mb-4">"AthenaNG's unwavering commitment to their vision and mission has
+                                transformed our global network operations. Their innovative approach and dedication to
+                                excellence have delivered both performance improvements and significant cost savings."
+                            </p>
+
+                            <blockquote class="testimonial">
+                                <i class="bi bi-quote display-1 text-primary opacity-25"></i>
+                                <p class="fs-5 mb-3">"Working with AthenaNG means partnering with a team that truly
+                                    lives by their values. Their gold standard approach to partnership has made them an
+                                    invaluable extension of our IT team."</p>
+                                <footer class="blockquote-footer mt-3">
+                                    <strong>Global IT Director</strong>, Fortune 100 Manufacturing Company
+                                </footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 d-none d-lg-block">
+                        <div class="approach-image h-100">
+                            <div class="h-100 d-flex align-items-center justify-content-center p-5">
+                                <div class="text-center text-white">
+                                    <i class="bi bi-handshake display-1 mb-4"></i>
+                                    <h3>Partnership Excellence</h3>
+                                    <p class="mb-0">Built on trust and shared success</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta section">
+        <div class="container">
+            <div class="row align-items-center" data-aos="fade-up">
+                <div class="col-lg-8">
+                    <div class="cta-content text-white">
+                        <h2 class="mb-3">Partner with Purpose-Driven Experts</h2>
+                        <p class="lead mb-4">Join companies worldwide who trust AthenaNG to transform their technology
+                            infrastructure with solutions driven by our vision and mission.</p>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-telephone me-3"></i>
+                                <span>305-407-9223</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope me-3"></i>
+                                <span>info@athenang.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'core:contact-us' %}" class="btn btn-light btn-lg px-5">
+                        <i class="bi bi-chat-left-text me-2"></i>Start Partnership
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

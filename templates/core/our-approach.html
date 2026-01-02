@@ -1,0 +1,802 @@
+{% extends 'base-core.html' %}
+
+{% load static %}
+
+{% block title %}Our Approach{% endblock title %}
+
+{% block head %}
+<style>
+    /* Custom Styles with Dark Theme Colors */
+    .approach-hero {
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .breadcrumbs-light ol {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .breadcrumbs-light li {
+        margin-right: 10px;
+    }
+
+    .breadcrumbs-light li:not(:last-child):after {
+        content: "/";
+        margin-left: 10px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .approach-icon-wrapper {
+        position: relative;
+    }
+
+    .approach-icon-large {
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .approach-icon-large i {
+        font-size: 80px;
+        color: var(--contrast-color);
+    }
+
+    .floating-badges {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        background: var(--surface-color);
+        padding: 30px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+        margin-top: 10px;
+    }
+
+    .title-divider {
+        width: 60px;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 15px 0;
+    }
+
+    .pillar-card {
+        background: var(--surface-color);
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        height: 100%;
+        position: relative;
+    }
+
+    .pillar-card.featured {
+        border: 2px solid var(--accent-color);
+        transform: scale(1.02);
+    }
+
+    .pillar-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .pillar-number {
+        position: absolute;
+        top: -20px;
+        left: 30px;
+        width: 50px;
+        height: 50px;
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        font-family: var(--heading-font);
+    }
+
+    .pillar-icon {
+        width: 70px;
+        height: 70px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .pillar-icon i {
+        font-size: 32px;
+        color: var(--accent-color);
+    }
+
+    .pillar-feature {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 12px;
+    }
+
+    .pillar-feature i {
+        color: var(--accent-color);
+        margin-right: 10px;
+        margin-top: 3px;
+        flex-shrink: 0;
+    }
+
+    .process-step-card {
+        background: var(--surface-color);
+        padding: 35px 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .process-step-card:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 6px;
+        height: 100%;
+        background: var(--accent-color);
+    }
+
+    .step-tag {
+        display: inline-block;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        color: var(--accent-color);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .benefit-item-custom {
+        display: flex;
+        align-items: flex-start;
+        padding: 25px;
+        background: var(--surface-color);
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        transition: all 0.3s ease;
+    }
+
+    .benefit-item-custom:hover {
+        transform: translateX(5px);
+        border-color: var(--accent-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .benefit-icon-custom {
+        width: 50px;
+        height: 50px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        flex-shrink: 0;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .benefit-icon-custom i {
+        font-size: 22px;
+        color: var(--accent-color);
+    }
+
+    .approach-image-section {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .quote-card {
+        position: relative;
+        padding: 40px;
+        background: color-mix(in srgb, var(--default-color), transparent 95%);
+        border-radius: 12px;
+        border-left: 6px solid var(--accent-color);
+    }
+
+    .quote-card i {
+        position: absolute;
+        top: -25px;
+        left: 40px;
+        color: var(--accent-color);
+        font-size: 3rem;
+        opacity: 0.3;
+    }
+
+    .final-cta {
+        padding: 80px 0;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .bg-light {
+        background-color: var(--surface-color) !important;
+    }
+
+    /* Fix for shadow-sm class */
+    .border-0.shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-primary:hover {
+        background-color: color-mix(in srgb, var(--accent-color), black 10%);
+        border-color: color-mix(in srgb, var(--accent-color), black 10%);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-primary {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-light {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+        border-color: var(--contrast-color);
+    }
+
+    .btn-light:hover {
+        background-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        border-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-light {
+        border-color: var(--contrast-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-light:hover {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+    }
+
+    .badge.bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .badge.bg-success {
+        background-color: color-mix(in srgb, #10b981, transparent 20%) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-white {
+        background-color: var(--contrast-color) !important;
+        color: var(--accent-color) !important;
+    }
+
+    @media (max-width: 768px) {
+        .approach-hero {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .approach-icon-wrapper {
+            margin-top: 40px;
+        }
+
+        .hero-actions .btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .hero-actions .btn:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    /* Dark theme specific text colors */
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    .text-muted {
+        color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+    }
+
+    /* Ensure proper text contrast for all cards */
+    .card {
+        background-color: var(--surface-color) !important;
+        border-color: color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .card-body {
+        color: var(--default-color) !important;
+    }
+
+    .card-title,
+    .card-body h4,
+    .card-body h5 {
+        color: var(--heading-color) !important;
+    }
+
+    .card-text,
+    .card-body p {
+        color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    }
+
+    .lead {
+        color: color-mix(in srgb, var(--default-color), transparent 10%) !important;
+    }
+
+    /* Fix inline style overrides in HTML */
+    .approach-hero,
+    .approach-image-section,
+    .final-cta {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%) !important;
+    }
+
+    @media (max-width: 576px) {
+    .stat-card {
+        padding: 1rem !important;
+    }
+    
+    .stat-value {
+        font-size: 1.35rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .stat-label {
+        font-size: 0.95rem !important;
+        margin-top: 0.5rem !important;
+    }
+}
+</style>
+{% endblock head %}
+
+{% block content %}
+
+<main class="main">
+
+    <!-- Hero Section -->
+    <section class="approach-hero section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8" data-aos="fade-right">
+                    <div class="hero-content text-white">
+                        <nav class="breadcrumbs-light mb-4">
+                            <ol>
+                                <li><a href="{% url 'core:index' %}" class="text-white-50">Home</a></li>
+                                <li><a href="#" class="text-white-50">About Us</a></li>
+                                <li class="current text-white">Our Approach</li>
+                            </ol>
+                        </nav>
+                        <h1 class="display-4 fw-bold mb-4">Our Approach</h1>
+                        <p class="lead mb-4">We refuse to compromise on quality. Our approach combines veteran
+                            expertise, tested solutions, and continuous innovation to deliver exceptional results for
+                            our clients.</p>
+                        <div class="hero-actions">
+                            <a href="#methodology" class="btn btn-light btn-lg me-3">
+                                <i class="bi bi-gear me-2"></i>Our Methodology
+                            </a>
+                            <a href="#process" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-diagram-3 me-2"></i>Our Process
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-left">
+                    <div class="approach-icon-wrapper">
+                        <div class="approach-icon-large">
+                            <i class="bi bi-bullseye"></i>
+                        </div>
+                        <div class="floating-badges">
+                            <span class="badge bg-white text-primary">Quality Without Compromise</span>
+                            <span class="badge bg-white text-primary mt-2">7+ Decades Experience</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="quick-stats section">
+        <div class="container">
+            <div class="row g-4" data-aos="fade-up">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word;">100%</div>
+                        <div class="stat-label">Quality Commitment</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word;">70+</div>
+                        <div class="stat-label">Years Combined Experience</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word;">40%</div>
+                        <div class="stat-label">Average Cost Reduction</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word;">Continuous</div>
+                        <div class="stat-label">Innovation Investment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Overview -->
+    <section id="methodology" class="methodology-overview section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">Quality Without Compromise</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <div class="overview-content">
+                        <p class="lead mb-4">Our approach is simple: we refuse to compromise, particularly when it comes
+                            to quality. We set high standards and we aim to surpass them.</p>
+                        <p>We achieve excellence through a three-pillar methodology that combines veteran expertise with
+                            proven solutions and continuous innovation. This approach has been refined through decades
+                            of experience working with Fortune 100 companies worldwide.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="service-visual">
+                        <div class="visual-card">
+                            <img src="{% static 'core/assets/img/about/about-4.jpg' %}" alt="Our Approach"
+                                class="img-fluid rounded-3 shadow">
+                            <!-- <div class="visual-overlay">
+                                <div class="overlay-content">
+                                    <h4>Proven Excellence</h4>
+                                    <p>Fortune 100 tested methodologies</p>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three-Pillar Methodology -->
+    <section class="pillars-section section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Our Three-Pillar Approach</h2>
+                <p class="lead">The methodology that drives our exceptional results</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-4 col-md-6">
+                    <div class="pillar-card">
+                        <div class="pillar-number">01</div>
+                        <div class="pillar-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <h3 class="text-center mb-4">Veteran, Highly Skilled Team</h3>
+                        <p>We do this by deploying a veteran, highly skilled team with over 7 decades of combined
+                            expertise working for Fortune 100 Telecom industry Leaders.</p>
+
+                        <div class="pillar-features mt-4">
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Industry veterans with Fortune 100 experience</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Deep understanding of ICT network requirements</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Established Telecom and IT professionals</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Backgrounds in both industry and entrepreneurship</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="pillar-card featured">
+                        <div class="pillar-number">02</div>
+                        <div class="pillar-icon">
+                            <i class="bi bi-gear-fill"></i>
+                        </div>
+                        <h3 class="text-center mb-4">Tried and Tested Solutions</h3>
+                        <p>Implementing tried and tested solutions that improve quality of service, enhance efficiency
+                            and significantly reduce total cost of ownership.</p>
+
+                        <div class="pillar-features mt-4">
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Proven network design methodologies</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Industry best practices implementation</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Cost-effective deployment strategies</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Quality assurance protocols</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="pillar-card">
+                        <div class="pillar-number">03</div>
+                        <div class="pillar-icon">
+                            <i class="bi bi-lightbulb-fill"></i>
+                        </div>
+                        <h3 class="text-center mb-4">Continuous Innovation Investment</h3>
+                        <p>Continuously investing in our employees to ensure we are at the forefront of innovation, and
+                            the competition.</p>
+
+                        <div class="pillar-features mt-4">
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Regular training and development</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Research on emerging technologies</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Adoption of cutting-edge solutions</span>
+                            </div>
+                            <div class="pillar-feature">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Staying ahead of industry trends</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Details -->
+    <section id="process" class="process-details section">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>How We Deliver Results</h2>
+                <p class="lead">A structured process that ensures success at every stage</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-3 col-md-6">
+                    <div class="process-step-card">
+                        <h4 class="mb-3">Discovery & Analysis</h4>
+                        <p>We begin by listening to our customers, understanding their requirements, and analyzing their
+                            current network infrastructure and business goals.</p>
+                        <div class="step-tags mt-4">
+                            <span class="step-tag">Requirements Gathering</span>
+                            <span class="step-tag">Network Assessment</span>
+                            <span class="step-tag">Goal Definition</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="process-step-card">
+                        <h4 class="mb-3">Strategic Planning</h4>
+                        <p>Developing customized solutions that address specific needs while considering scalability,
+                            cost-effectiveness, and future growth.</p>
+                        <div class="step-tags mt-4">
+                            <span class="step-tag">Solution Design</span>
+                            <span class="step-tag">Technology Selection</span>
+                            <span class="step-tag">Roadmap Creation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="process-step-card">
+                        <h4 class="mb-3">Implementation</h4>
+                        <p>Executing the plan with precision, using proven methodologies and our experienced team to
+                            deploy solutions efficiently and effectively.</p>
+                        <div class="step-tags mt-4">
+                            <span class="step-tag">Network Deployment</span>
+                            <span class="step-tag">System Integration</span>
+                            <span class="step-tag">Quality Testing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="process-step-card">
+                        <h4 class="mb-3">Optimization & Support</h4>
+                        <p>Continuous monitoring, optimization, and support to ensure peak performance, security, and
+                            ongoing value for our clients.</p>
+                        <div class="step-tags mt-4">
+                            <span class="step-tag">Performance Monitoring</span>
+                            <span class="step-tag">Regular Updates</span>
+                            <span class="step-tag">Technical Support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Our Approach Works -->
+    <section class="why-approach section bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">Why Our Approach Delivers Results</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <p>Our methodology has been refined through decades of experience working with Fortune 100 companies
+                        and organizations worldwide.</p>
+
+                    <div class="benefits-list mt-4">
+                        <div class="benefit-item-custom">
+                            <div class="benefit-icon-custom">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-2">Reduced Total Cost of Ownership</h5>
+                                <p class="mb-0">Our solutions are specifically designed to significantly reduce TCO
+                                    while improving performance.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item-custom">
+                            <div class="benefit-icon-custom">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-2">Enhanced Efficiency</h5>
+                                <p class="mb-0">Streamlined processes and optimized networks lead to improved
+                                    operational efficiency.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item-custom">
+                            <div class="benefit-icon-custom">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-2">Improved Quality of Service</h5>
+                                <p class="mb-0">Reliable, high-performance networks that meet and exceed service level
+                                    expectations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="quote-card mt-4 mt-lg-0">
+                        <i class="bi bi-quote"></i>
+                        <h4 class="mb-4">We don't just meet expectations – we set new standards for excellence in
+                            technology consulting.</h4>
+                        <div class="approach-image-section p-4 rounded-3">
+                            <div class="text-white">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-award display-4 me-3"></i>
+                                    <div>
+                                        <h5 class="mb-1">Fortune 100 Proven</h5>
+                                        <p class="mb-0">Tested and validated with industry leaders</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta section">
+        <div class="container">
+            <div class="row align-items-center" data-aos="fade-up">
+                <div class="col-lg-8">
+                    <div class="cta-content text-white">
+                        <h2 class="mb-3">Ready to Experience Our Approach?</h2>
+                        <p class="lead mb-4">Let us show you how our quality-focused methodology can transform your
+                            technology infrastructure.</p>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-telephone me-3"></i>
+                                <span>305-407-9223</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope me-3"></i>
+                                <span>info@athenang.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'core:index' %}#contact" class="btn btn-light btn-lg px-5 me-3">
+                        <i class="bi bi-chat-left-text me-2"></i>Get in Touch
+                    </a>
+                    <a href="{% url 'core:our-team' %}" class="btn btn-outline-light btn-lg px-5 mt-3 mt-lg-0">
+                        <i class="bi bi-people me-2"></i>Meet Our Team
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

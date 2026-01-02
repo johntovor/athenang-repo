@@ -1,0 +1,1076 @@
+{% extends 'base-core.html' %}
+
+{% load static %}
+
+{% block title %}Our Services - AthenaNG Consulting{% endblock title %}
+
+{% block head %}
+<style>
+    /* Custom Styles with Dark Theme Colors */
+    .services-hero {
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .breadcrumbs-light ol {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .breadcrumbs-light li {
+        margin-right: 10px;
+    }
+
+    .breadcrumbs-light li:not(:last-child):after {
+        content: "/";
+        margin-left: 10px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .services-icon-wrapper {
+        position: relative;
+    }
+
+    .services-icon-large {
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .services-icon-large i {
+        font-size: 80px;
+        color: var(--contrast-color);
+    }
+
+    .floating-badges {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        background: var(--surface-color);
+        padding: 30px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+        margin-top: 10px;
+    }
+
+    .title-divider {
+        width: 60px;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 15px 0;
+    }
+
+    /* Service Category Cards */
+    .category-card-custom {
+        background: var(--surface-color);
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        height: 100%;
+        text-align: center;
+    }
+
+    .category-card-custom:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .category-icon-large {
+        width: 80px;
+        height: 80px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        border: 2px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .category-icon-large i {
+        font-size: 36px;
+        color: var(--accent-color);
+    }
+
+    .category-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    .category-tag {
+        display: inline-block;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        color: var(--accent-color);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    /* Service Cards */
+    .service-card-custom {
+        background: var(--surface-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        height: 100%;
+        position: relative;
+    }
+
+    .service-card-custom:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .service-card-header {
+        padding: 25px 25px 0;
+        position: relative;
+    }
+
+    .service-icon-wrapper {
+        width: 70px;
+        height: 70px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .service-icon-wrapper i {
+        font-size: 32px;
+        color: var(--accent-color);
+    }
+
+    .popular-badge {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .service-card-body {
+        padding: 0 25px 25px;
+    }
+
+    .service-features-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .service-features-list li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+    }
+
+    .service-features-list li i {
+        color: var(--accent-color);
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+
+    .service-cta-link {
+        display: inline-flex;
+        align-items: center;
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .service-cta-link:hover {
+        color: color-mix(in srgb, var(--accent-color), transparent 20%);
+        transform: translateX(5px);
+    }
+
+    .service-cta-link i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .service-cta-link:hover i {
+        transform: translateX(5px);
+    }
+
+    /* Advantage Items */
+    .advantage-item-custom {
+        display: flex;
+        align-items: flex-start;
+        padding: 25px;
+        background: var(--surface-color);
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        transition: all 0.3s ease;
+    }
+
+    .advantage-item-custom:hover {
+        transform: translateX(5px);
+        border-color: var(--accent-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .advantage-icon-custom {
+        width: 50px;
+        height: 50px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        flex-shrink: 0;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .advantage-icon-custom i {
+        font-size: 22px;
+        color: var(--accent-color);
+    }
+
+    /* Stats Grid */
+    .stats-grid-custom {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin: 30px 0;
+    }
+
+    .stat-card-custom {
+        background: var(--surface-color);
+        padding: 25px 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card-custom:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .stat-value-custom {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .stat-label-custom {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+    }
+
+    /* Partnership Card */
+    .partnership-card {
+        background: var(--surface-color);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        margin-top: 30px;
+    }
+
+    .partnership-badge {
+        display: inline-block;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        color: var(--accent-color);
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .final-cta {
+        padding: 80px 0;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .bg-light {
+        background-color: var(--surface-color) !important;
+    }
+
+    /* Fix for shadow-sm class */
+    .border-0.shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-primary:hover {
+        background-color: color-mix(in srgb, var(--accent-color), black 10%);
+        border-color: color-mix(in srgb, var(--accent-color), black 10%);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-primary {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-light {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+        border-color: var(--contrast-color);
+    }
+
+    .btn-light:hover {
+        background-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        border-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-light {
+        border-color: var(--contrast-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-light:hover {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+    }
+
+    .badge.bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .badge.bg-success {
+        background-color: color-mix(in srgb, #10b981, transparent 20%) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-white {
+        background-color: var(--contrast-color) !important;
+        color: var(--accent-color) !important;
+    }
+
+    @media (max-width: 768px) {
+        .services-hero {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .services-icon-wrapper {
+            margin-top: 40px;
+        }
+
+        .hero-actions .btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .hero-actions .btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .stats-grid-custom {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Dark theme specific text colors */
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    .text-muted {
+        color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+    }
+
+    /* Ensure proper text contrast for all cards */
+    .card {
+        background-color: var(--surface-color) !important;
+        border-color: color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .card-body {
+        color: var(--default-color) !important;
+    }
+
+    .card-title,
+    .card-body h4,
+    .card-body h5 {
+        color: var(--heading-color) !important;
+    }
+
+    .card-text,
+    .card-body p {
+        color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    }
+
+    .lead {
+        color: color-mix(in srgb, var(--default-color), transparent 10%) !important;
+    }
+
+    /* Fix inline style overrides in HTML */
+    .services-hero,
+    .final-cta {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%) !important;
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+
+<main class="main">
+
+    <!-- Hero Section -->
+    <section class="services-hero section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8" data-aos="fade-right">
+                    <div class="hero-content text-white">
+                        <nav class="breadcrumbs-light mb-4">
+                            <ol>
+                                <li><a href="{% url 'core:index' %}" class="text-white-50">Home</a></li>
+                                <li class="current text-white">Our Services</li>
+                            </ol>
+                        </nav>
+                        <h1 class="display-4 fw-bold mb-4">Our Services</h1>
+                        <p class="lead mb-4">We provide our clients with emerging and cutting edge solutions required to
+                            operate, deploy and expand their networks quickly and efficiently in the most feature-rich
+                            and cost-effective way.</p>
+                        <div class="hero-actions">
+                            <a href="#service-categories" class="btn btn-light btn-lg me-3">
+                                <i class="bi bi-grid me-2"></i>Service Categories
+                            </a>
+                            <a href="#all-services" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-list-ul me-2"></i>View All Services
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-left">
+                    <div class="services-icon-wrapper">
+                        <div class="services-icon-large">
+                            <i class="bi bi-gear-fill"></i>
+                        </div>
+                        <div class="floating-badges">
+                            <span class="badge bg-white text-primary">Comprehensive Solutions</span>
+                            <span class="badge bg-white text-primary mt-2">Fortune 100 Experience</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="quick-stats section">
+        <div class="container">
+            <div class="row g-4" data-aos="fade-up">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">70+</div>
+                        <div class="stat-label">Years Combined Expertise</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">11+</div>
+                        <div class="stat-label">Service Categories</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">580+</div>
+                        <div class="stat-label">Global Clients Served</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">2000+</div>
+                        <div class="stat-label">Projects Delivered</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Categories -->
+    <section id="service-categories" class="service-categories section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">End-to-End Technology Consulting</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <div class="overview-content">
+                        <p class="lead mb-4">AthenaNG Consulting delivers innovative technology solutions that enhance
+                            efficiency, improve quality of service, and significantly reduce total cost of ownership for
+                            businesses worldwide.</p>
+                        <p>Our comprehensive service portfolio covers every aspect of modern technology infrastructure,
+                            from network design and security to cloud computing and digital transformation.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="service-visual">
+                        <div class="visual-card">
+                            <img src="{% static 'core/assets/img/services/services-10.webp' %}"
+                                alt="Technology Solutions" class="img-fluid rounded-3 shadow">
+                            <!-- <div class="visual-overlay">
+                                <div class="overlay-content">
+                                    <h4>Proven Solutions</h4>
+                                    <p>Fortune 100 tested methodologies</p>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Grid -->
+    <section class="categories-grid section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Service Categories</h2>
+                <p class="lead">Our services are organized into key technology areas to better serve your needs</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card-custom">
+                        <div class="category-icon-large">
+                            <i class="bi bi-wifi"></i>
+                        </div>
+                        <h4 class="mb-3">Network Services</h4>
+                        <p class="mb-4">Design, deployment, optimization, and management of network infrastructure</p>
+                        <div class="category-tags">
+                            <span class="category-tag">Network Design</span>
+                            <span class="category-tag">Deployment</span>
+                            <span class="category-tag">Optimization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card-custom">
+                        <div class="category-icon-large">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h4 class="mb-3">Security Services</h4>
+                        <p class="mb-4">Comprehensive protection against cyber threats and compliance management</p>
+                        <div class="category-tags">
+                            <span class="category-tag">Security Audits</span>
+                            <span class="category-tag">Information Security</span>
+                            <span class="category-tag">Compliance</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card-custom">
+                        <div class="category-icon-large">
+                            <i class="bi bi-cloud"></i>
+                        </div>
+                        <h4 class="mb-3">Cloud Services</h4>
+                        <p class="mb-4">Cloud computing, migration, and software-defined network solutions</p>
+                        <div class="category-tags">
+                            <span class="category-tag">Cloud Computing</span>
+                            <span class="category-tag">SDN</span>
+                            <span class="category-tag">Migration</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card-custom">
+                        <div class="category-icon-large">
+                            <i class="bi bi-archive"></i>
+                        </div>
+                        <h4 class="mb-3">Digital Solutions</h4>
+                        <p class="mb-4">Document management, archiving, and systems integration services</p>
+                        <div class="category-tags">
+                            <span class="category-tag">Digital Archiving</span>
+                            <span class="category-tag">Systems Integration</span>
+                            <span class="category-tag">Consulting</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Services -->
+    <section id="all-services" class="all-services section">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>All Services</h2>
+                <p class="lead">Comprehensive technology solutions for every business need</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <!-- Network Design & Optimization -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-diagram-3"></i>
+                            </div>
+                            <div class="popular-badge">Popular</div>
+                            <h4 class="mb-3">Network Design & Optimization</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Global name in network engineering with high-speed design and optimization
+                                solutions that connect teams and improve productivity.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Network Architecture</li>
+                                <li><i class="bi bi-check-circle"></i> Performance Optimization</li>
+                                <li><i class="bi bi-check-circle"></i> Global Implementation</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='network-design' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Deployment & Roll-Out -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-wifi"></i>
+                            </div>
+                            <h4 class="mb-3">Network Deployment & Roll-Out</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Professional deployment services covering planning, design, integration,
+                                optimization, and end-to-end logistics management.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Wireless Networks</li>
+                                <li><i class="bi bi-check-circle"></i> Fixed Line Networks</li>
+                                <li><i class="bi bi-check-circle"></i> 24/7 Monitoring</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='network-deployment' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Systems Integration -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-hdd-network"></i>
+                            </div>
+                            <h4 class="mb-3">Systems Integration</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Connect various IT systems, hardware and software into one cohesive and
+                                well-functioning body for increased productivity.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Architectural Design</li>
+                                <li><i class="bi bi-check-circle"></i> Testing & Debugging</li>
+                                <li><i class="bi bi-check-circle"></i> API Integration</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='systems-integration' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Consulting & Transformation -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </div>
+                            <h4 class="mb-3">Network Consulting & Transformation</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Transform your network for digital evolution with flexible, robust, and
+                                secure solutions that adapt easily to business changes.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Digital Transformation</li>
+                                <li><i class="bi bi-check-circle"></i> Strategic Consulting</li>
+                                <li><i class="bi bi-check-circle"></i> Cloud Integration</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='network-consulting' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Support & Staff Augmentation -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                            <h4 class="mb-3">Network Support & Staff Augmentation</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Fill skill gaps with expert staffing augmentation solutions and
+                                comprehensive network support services tailored to your needs.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Level 1 & 2 Support</li>
+                                <li><i class="bi bi-check-circle"></i> Temporary Staffing</li>
+                                <li><i class="bi bi-check-circle"></i> Project-Based Teams</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='network-support' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Software Defined Network Services -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-code-slash"></i>
+                            </div>
+                            <h4 class="mb-3">Software Defined Network Services</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Centrally controlled network management through software applications using
+                                open APIs for consistent network control.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> SDN Architecture</li>
+                                <li><i class="bi bi-check-circle"></i> Network Virtualization</li>
+                                <li><i class="bi bi-check-circle"></i> API Programming</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='sdn' %}" class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Digital & Archiving -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-archive"></i>
+                            </div>
+                            <h4 class="mb-3">Digital & Archiving</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Complete spectrum of digital archiving services with cloud storage and
+                                virtual servers for secure document management.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Document Scanning</li>
+                                <li><i class="bi bi-check-circle"></i> Cloud Storage</li>
+                                <li><i class="bi bi-check-circle"></i> Data Migration</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='digital-archiving' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Audits & Compliance -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-clipboard-check"></i>
+                            </div>
+                            <h4 class="mb-3">Network Audits & Compliance</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Periodic network examinations to ensure security strategies are in sync with
+                                overall business activities and goals.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Security Audits</li>
+                                <li><i class="bi bi-check-circle"></i> Compliance Testing</li>
+                                <li><i class="bi bi-check-circle"></i> Vulnerability Assessment</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='network-audits' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Network & IP Planning -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-hdd-rack"></i>
+                            </div>
+                            <h4 class="mb-3">Core Network & IP Planning</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Solid foundation for building secure, compliant networks with DDI services
+                                and high availability architecture.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> IP Address Management</li>
+                                <li><i class="bi bi-check-circle"></i> DNS & DHCP Services</li>
+                                <li><i class="bi bi-check-circle"></i> Network Architecture</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='core-network' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Information Security -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-shield-lock"></i>
+                            </div>
+                            <h4 class="mb-3">Information Security</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">Complete protection against cyber threats with multi-faceted prevention
+                                strategy and state-of-the-art detection tools.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Security Assessment</li>
+                                <li><i class="bi bi-check-circle"></i> Penetration Testing</li>
+                                <li><i class="bi bi-check-circle"></i> Cloud Security</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='information-security' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cloud Computing -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card-custom">
+                        <div class="service-card-header">
+                            <div class="service-icon-wrapper">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                            </div>
+                            <h4 class="mb-3">Cloud Computing</h4>
+                        </div>
+                        <div class="service-card-body">
+                            <p class="mb-4">On-demand delivery of computing services, tools and applications to help
+                                organizations reduce IT resource requirements.</p>
+                            <ul class="service-features-list">
+                                <li><i class="bi bi-check-circle"></i> Cloud Migration</li>
+                                <li><i class="bi bi-check-circle"></i> Infrastructure Management</li>
+                                <li><i class="bi bi-check-circle"></i> ROI Optimization</li>
+                            </ul>
+                            <a href="{% url 'core:service-details' service_slug='cloud-computing' %}"
+                                class="service-cta-link">
+                                Explore Service <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Our Services -->
+    <section class="why-services section bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">Why Choose Our Services?</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <p class="lead mb-4">With over 7 decades of combined expertise and Fortune 100 industry experience,
+                        we bring unmatched knowledge to every project.</p>
+
+                    <div class="advantages-list">
+                        <div class="advantage-item-custom">
+                            <div class="advantage-icon-custom">
+                                <i class="bi bi-award"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-2">Proven Expertise</h5>
+                                <p class="mb-0">Industry veterans with Fortune 100 Telecom experience and global
+                                    implementation success.</p>
+                            </div>
+                        </div>
+
+                        <div class="advantage-item-custom">
+                            <div class="advantage-icon-custom">
+                                <i class="bi bi-cash-coin"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-2">Cost-Effective Solutions</h5>
+                                <p class="mb-0">Significantly reduce total cost of ownership while enhancing network
+                                    performance and reliability.</p>
+                            </div>
+                        </div>
+
+                        <div class="advantage-item-custom">
+                            <div class="advantage-icon-custom">
+                                <i class="bi bi-lightning-charge"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-2">Cutting-Edge Technology</h5>
+                                <p class="mb-0">Access to emerging and innovative solutions that keep you ahead of the
+                                    competition.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="stats-grid-custom">
+                        <div class="stat-card-custom">
+                            <div class="stat-value-custom">70+</div>
+                            <div class="stat-label-custom">Years Combined Expertise</div>
+                        </div>
+                        <div class="stat-card-custom">
+                            <div class="stat-value-custom">580+</div>
+                            <div class="stat-label-custom">Global Clients Served</div>
+                        </div>
+                        <div class="stat-card-custom">
+                            <div class="stat-value-custom">2000+</div>
+                            <div class="stat-label-custom">Projects Delivered</div>
+                        </div>
+                        <div class="stat-card-custom">
+                            <div class="stat-value-custom">24/7</div>
+                            <div class="stat-label-custom">Support Available</div>
+                        </div>
+                    </div>
+
+                    <div class="partnership-card">
+                        <span class="partnership-badge">Strategic Partnership</span>
+                        <h5 class="mb-3">Document Management Expertise</h5>
+                        <p class="mb-0">AthenaNG Consulting in partnership with Fortune Data and Square 9 in
+                            Connecticut, USA, has provided Document Management (Digital Archiving) solutions since 2010,
+                            delivering customized technologically integrated approaches for business efficiency.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta section">
+        <div class="container">
+            <div class="row align-items-center" data-aos="fade-up">
+                <div class="col-lg-8">
+                    <div class="cta-content text-white">
+                        <h2 class="mb-3">Ready to Transform Your Technology Infrastructure?</h2>
+                        <p class="lead mb-4">Partner with AthenaNG to implement innovative, reliable, cost effective
+                            solutions that reduce your total cost of ownership and enhance your network quality.</p>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-telephone me-3"></i>
+                                <span>305-407-9223</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope me-3"></i>
+                                <span>info@athenang.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'core:contact-us' %}" class="btn btn-light btn-lg px-5 me-3">
+                        <i class="bi bi-chat-left-text me-2"></i>Get Started
+                    </a>
+                    <a href="{% url 'core:contact-us' %}" class="btn btn-outline-light btn-lg px-5 mt-3 mt-lg-0">
+                        <i class="bi bi-calendar-check me-2"></i>Schedule Consultation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

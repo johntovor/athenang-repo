@@ -1,0 +1,875 @@
+{% extends 'base-core.html' %}
+
+{% load static %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block head %}
+<style>
+    /* Custom Styles with Dark Theme Colors */
+    .service-hero {
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .breadcrumbs-light ol {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .breadcrumbs-light li {
+        margin-right: 10px;
+    }
+
+    .breadcrumbs-light li:not(:last-child):after {
+        content: "/";
+        margin-left: 10px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .hero-icon-wrapper {
+        position: relative;
+    }
+
+    .service-icon-large {
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .service-icon-large i {
+        font-size: 80px;
+        color: var(--contrast-color);
+    }
+
+    .floating-badges {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        background: var(--surface-color);
+        padding: 30px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+        margin-top: 10px;
+    }
+
+    .title-divider {
+        width: 60px;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 15px 0;
+    }
+
+    .feature-icon-wrapper {
+        display: inline-block;
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .feature-icon i {
+        font-size: 30px;
+        color: var(--accent-color);
+    }
+
+    /* Fix for feature cards - override Bootstrap card styles */
+    .feature-card.card {
+        background-color: var(--surface-color) !important;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .feature-card.card .card-body {
+        background-color: transparent !important;
+    }
+
+    .feature-card.card .card-title {
+        color: var(--heading-color) !important;
+    }
+
+    .feature-card.card .card-text {
+        color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    }
+
+    .benefit-item {
+        padding: 15px;
+        background: var(--surface-color);
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        margin-bottom: 15px;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .benefit-icon i {
+        font-size: 24px;
+        color: var(--accent-color);
+    }
+
+    .benefit-content h5 {
+        color: var(--heading-color);
+    }
+
+    .process-step {
+        position: relative;
+        padding-left: 80px;
+    }
+
+    .step-number {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 60px;
+        height: 60px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--contrast-color);
+        font-size: 1.5rem;
+        font-weight: bold;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .step-content h4 {
+        color: var(--heading-color);
+    }
+
+    .step-content p {
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+    }
+
+    .technologies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .tech-card {
+        background: var(--surface-color);
+        padding: 25px 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .tech-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .tech-icon {
+        width: 60px;
+        height: 60px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .tech-icon i {
+        font-size: 24px;
+        color: var(--accent-color);
+    }
+
+    .tech-name {
+        font-weight: 500;
+        color: var(--heading-color);
+    }
+
+    .success-card {
+        background: var(--surface-color);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .success-content {
+        background: var(--surface-color);
+    }
+
+    .success-content h2 {
+        color: var(--heading-color);
+    }
+
+    .success-content .lead {
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+    }
+
+    .results-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .result-item {
+        background: color-mix(in srgb, var(--accent-color), transparent 95%);
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .result-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+    }
+
+    .result-label {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+        margin-top: 5px;
+    }
+
+    .testimonial {
+        position: relative;
+        padding: 30px;
+        background: color-mix(in srgb, var(--default-color), transparent 95%);
+        border-radius: 10px;
+        border-left: 4px solid var(--accent-color);
+    }
+
+    .testimonial i {
+        position: absolute;
+        top: -20px;
+        left: 20px;
+        color: var(--accent-color);
+    }
+
+    .testimonial p {
+        color: var(--default-color);
+    }
+
+    .success-image {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .related-icon {
+        width: 70px;
+        height: 70px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .related-icon i {
+        font-size: 30px;
+        color: var(--accent-color);
+    }
+
+    /* Fix for related cards - override Bootstrap card styles */
+    .related-card.card {
+        background-color: var(--surface-color) !important;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .related-card.card .card-body {
+        background-color: transparent !important;
+    }
+
+    .related-card .card-title {
+        color: var(--heading-color);
+    }
+
+    .related-card .card-text {
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+    }
+
+    .final-cta {
+        padding: 80px 0;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .bg-light {
+        background-color: var(--surface-color) !important;
+    }
+
+    /* Fix for shadow-sm class */
+    .border-0.shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-primary:hover {
+        background-color: color-mix(in srgb, var(--accent-color), black 10%);
+        border-color: color-mix(in srgb, var(--accent-color), black 10%);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-primary {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-light {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+        border-color: var(--contrast-color);
+    }
+
+    .btn-light:hover {
+        background-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        border-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-light {
+        border-color: var(--contrast-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-light:hover {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+    }
+
+    .badge.bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .badge.bg-success {
+        background-color: color-mix(in srgb, #10b981, transparent 20%) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-white {
+        background-color: var(--contrast-color) !important;
+        color: var(--accent-color) !important;
+    }
+
+    @media (max-width: 768px) {
+        .service-hero {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero-icon-wrapper {
+            margin-top: 40px;
+        }
+
+        .results-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .technologies-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .hero-actions .btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .hero-actions .btn:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    /* Dark theme specific text colors */
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    .text-muted {
+        color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+    }
+
+    /* Ensure proper text contrast for all cards */
+    .card {
+        background-color: var(--surface-color) !important;
+        border-color: color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .card-body {
+        color: var(--default-color) !important;
+    }
+
+    .card-title,
+    .card-body h4,
+    .card-body h5 {
+        color: var(--heading-color) !important;
+    }
+
+    .card-text,
+    .card-body p {
+        color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    }
+
+    .lead {
+        color: color-mix(in srgb, var(--default-color), transparent 10%) !important;
+    }
+
+    /* Fix inline style overrides in HTML */
+    .service-hero,
+    .success-image,
+    .final-cta {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%) !important;
+    }
+
+    @media (max-width: 576px) {
+        .stat-card {
+            padding: 1rem !important;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .stat-value {
+            font-size: 1.95rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 0.25rem !important;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem !important;
+            margin-top: 0.25rem !important;
+            line-height: 1.2 !important;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .stat-value {
+            font-size: 1.85rem !important;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem !important;
+        }
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+
+<main class="main">
+
+    <!-- Hero Section -->
+    <section class="service-hero section" style="background: linear-gradient(135deg, #1a237e 0%, #283593 100%);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8" data-aos="fade-right">
+                    <div class="hero-content text-white">
+                        <nav class="breadcrumbs-light mb-4">
+                            <ol>
+                                <li><a href="{% url 'core:index' %}" class="text-white-50">Home</a></li>
+                                <li><a href="{% url 'core:services' %}" class="text-white-50">Services</a></li>
+                                <li class="current text-white">{{ service.hero_title }}</li>
+                            </ol>
+                        </nav>
+                        <h1 class="display-4 fw-bold mb-4">{{ service.hero_title }}</h1>
+                        <p class="lead mb-4">{{ service.hero_description }}</p>
+                        <div class="hero-actions">
+                            <a href="{% url 'core:contact-us' %}" class="btn btn-light btn-lg me-3">
+                                <i class="bi bi-chat-left-text me-2"></i>Request Consultation
+                            </a>
+                            <a href="#service-features" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-arrow-down me-2"></i>Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-left">
+                    <div class="hero-icon-wrapper">
+                        <div class="service-icon-large">
+                            <i class="{{ icon }}"></i>
+                        </div>
+                        <div class="floating-badges">
+                            <span class="badge bg-white text-primary">Fortune 100 Experience</span>
+                            <span class="badge bg-white text-primary mt-2">70+ Years Expertise</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="quick-stats section">
+        <div class="container">
+            <div class="row g-4" data-aos="fade-up">
+                {% for stat in service.stats %}
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-2 p-md-4">
+                        <div class="stat-value" style="word-wrap: break-word; line-height: 1.2;">
+                            {{ stat.value }}
+                        </div>
+                        <div class="stat-label">{{ stat.label }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Overview -->
+    <section id="service-overview" class="service-overview section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">Service Overview</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <div class="overview-content">
+                        <p class="lead mb-4">{{ service.overview }}</p>
+                        {{ service.full_description|safe }}
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="service-visual">
+                        <div class="visual-card">
+                            <img src="{% static 'core/assets/img/services/services-10.webp' %}"
+                                alt="{{ service.hero_title }}" class="img-fluid rounded-3 shadow">
+                            <!-- <div class="visual-overlay">
+                                <div class="overlay-content">
+                                    <h4>Expert Implementation</h4>
+                                    <p>Proven solutions for enterprise networks</p>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section id="service-features" class="service-features section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Key Features</h2>
+                <p class="lead">Comprehensive capabilities for your network infrastructure</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                {% for feature in service.features %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon-wrapper mb-4">
+                                <div class="feature-icon">
+                                    <i class="{{ feature.icon }}"></i>
+                                </div>
+                            </div>
+                            <h4 class="card-title mb-3">{{ feature.title }}</h4>
+                            <p class="card-text">{{ feature.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits & Process -->
+    <section class="benefits-process section">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="benefits-section">
+                        <div class="section-header mb-4">
+                            <h2>Business Benefits</h2>
+                            <div class="title-divider"></div>
+                        </div>
+                        <div class="benefits-list">
+                            {% for benefit in service.benefits %}
+                            <div class="benefit-item d-flex align-items-start mb-3">
+                                <div class="benefit-icon me-3">
+                                    <i class="bi bi-check-circle-fill text-primary"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h5 class="mb-1">{{ benefit }}</h5>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="cta-box mt-5">
+                            <a href="{% url 'core:contact-us' %}" class="btn btn-primary btn-lg me-3">
+                                <i class="bi bi-calendar-check me-2"></i>Schedule Consultation
+                            </a>
+                            <a href="tel:305-407-9223" class="btn btn-outline-primary btn-lg">
+                                <i class="bi bi-telephone me-2"></i>Call Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="process-section">
+                        <div class="section-header mb-4">
+                            <h2>Our Process</h2>
+                            <div class="title-divider"></div>
+                        </div>
+                        <div class="process-timeline">
+                            {% for step in service.process %}
+                            <div class="process-step d-flex align-items-start mb-4">
+                                <div class="step-number me-4">
+                                    <span>{{ step.step }}</span>
+                                </div>
+                                <div class="step-content">
+                                    <h4 class="mb-2">{{ step.title }}</h4>
+                                    <p class="mb-0 text-muted">{{ step.description }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies -->
+    <section class="technologies-section section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Technologies We Work With</h2>
+                <p class="lead">Industry-leading solutions for optimal performance</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="technologies-grid" data-aos="fade-up" data-aos-delay="100">
+                {% for tech in service.technologies %}
+                <div class="tech-item">
+                    <div class="tech-card">
+                        <div class="tech-icon">
+                            <i class="bi bi-gear-fill"></i>
+                        </div>
+                        <span class="tech-name">{{ tech }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Story -->
+    <section class="success-story section">
+        <div class="container">
+            <div class="success-card rounded-4 overflow-hidden shadow-lg">
+                <div class="row g-0">
+                    <div class="col-lg-8">
+                        <div class="success-content p-5">
+                            <div class="d-flex align-items-center mb-4">
+                                <span class="badge bg-primary me-3">Success Story</span>
+                                <span class="badge bg-success">Case Study</span>
+                            </div>
+                            <h2 class="mb-4">Global Enterprise Network Transformation</h2>
+                            <p class="lead mb-4">A Fortune 500 manufacturing company with operations across 15 countries
+                                needed to optimize their global network infrastructure to support digital transformation
+                                initiatives.</p>
+
+                            <div class="results-grid mb-5">
+                                <div class="result-item text-center">
+                                    <div class="result-value">50%</div>
+                                    <div class="result-label">Reduction in Latency</div>
+                                </div>
+                                <div class="result-item text-center">
+                                    <div class="result-value">35%</div>
+                                    <div class="result-label">Cost Savings</div>
+                                </div>
+                                <div class="result-item text-center">
+                                    <div class="result-value">99.9%</div>
+                                    <div class="result-label">Uptime Achieved</div>
+                                </div>
+                            </div>
+
+                            <blockquote class="testimonial">
+                                <i class="bi bi-quote display-1 text-primary opacity-25"></i>
+                                <p class="fs-5 mb-3">"AthenaNG's network design expertise transformed our global
+                                    operations, delivering both performance improvements and significant cost savings."
+                                </p>
+                                <footer class="blockquote-footer mt-3">
+                                    <strong>Global IT Director</strong>, Manufacturing Company
+                                </footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 d-none d-lg-block">
+                        <div class="success-image h-100"
+                            style="background: linear-gradient(135deg, #1a237e 0%, #283593 100%);">
+                            <div class="h-100 d-flex align-items-center justify-content-center p-5">
+                                <div class="text-center text-white">
+                                    <i class="bi bi-award display-1 mb-4"></i>
+                                    <h3>Award-Winning Implementation</h3>
+                                    <p class="mb-0">Recognized for excellence in network engineering</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Services -->
+    <section class="related-services section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Related Services</h2>
+                <p class="lead">Explore other solutions that complement {{ service.hero_title }}</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                {% if service_slug == 'network-design' %}
+                <div class="col-md-4">
+                    <div class="related-card card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="related-icon mb-4">
+                                <i class="bi bi-wifi"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Network Deployment</h4>
+                            <p class="card-text mb-4">Professional deployment services covering planning, design, and
+                                implementation.</p>
+                            <a href="{% url 'core:service-details' service_slug='network-deployment' %}"
+                                class="btn btn-outline-primary">
+                                Learn More <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="related-card card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="related-icon mb-4">
+                                <i class="bi bi-clipboard-check"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Network Audits</h4>
+                            <p class="card-text mb-4">Comprehensive network audits and compliance assessments for
+                                optimal performance.</p>
+                            <a href="{% url 'core:service-details' service_slug='network-audits' %}"
+                                class="btn btn-outline-primary">
+                                Learn More <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="related-card card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="related-icon mb-4">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Information Security</h4>
+                            <p class="card-text mb-4">Complete protection against cyber threats with advanced security
+                                solutions.</p>
+                            <a href="{% url 'core:service-details' service_slug='information-security' %}"
+                                class="btn btn-outline-primary">
+                                Learn More <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <!-- Add other service conditions similarly -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta section" style="background: linear-gradient(135deg, #1a237e 0%, #283593 100%);">
+        <div class="container">
+            <div class="row align-items-center" data-aos="fade-up">
+                <div class="col-lg-8">
+                    <div class="cta-content text-white">
+                        <h2 class="mb-3">Ready to Transform Your Network?</h2>
+                        <p class="lead mb-4">Contact our experts today to discuss how we can optimize your
+                            infrastructure for peak performance and efficiency.</p>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-telephone me-3"></i>
+                                <span>305-407-9223</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope me-3"></i>
+                                <span>info@athenang.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'core:contact-us' %}" class="btn btn-light btn-lg px-5">
+                        <i class="bi bi-chat-left-text me-2"></i>Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

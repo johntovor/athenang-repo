@@ -1,0 +1,809 @@
+{% extends 'base-core.html' %}
+
+{% load static %}
+
+{% block title %}Our Team - AthenaNG Consulting{% endblock title %}
+
+{% block head %}
+<style>
+    /* Custom Styles with Dark Theme Colors */
+    .team-hero {
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .breadcrumbs-light ol {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .breadcrumbs-light li {
+        margin-right: 10px;
+    }
+
+    .breadcrumbs-light li:not(:last-child):after {
+        content: "/";
+        margin-left: 10px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .team-icon-wrapper {
+        position: relative;
+    }
+
+    .team-icon-large {
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .team-icon-large i {
+        font-size: 80px;
+        color: var(--contrast-color);
+    }
+
+    .floating-badges {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        background: var(--surface-color);
+        padding: 30px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+        margin-top: 10px;
+    }
+
+    .title-divider {
+        width: 60px;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 15px 0;
+    }
+
+    /* Team Member Cards */
+    .team-member-card {
+        background: var(--surface-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        height: 100%;
+    }
+
+    .team-member-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .member-image-container {
+        position: relative;
+        overflow: hidden;
+        height: 300px;
+    }
+
+    .member-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .team-member-card:hover .member-image-container img {
+        transform: scale(1.05);
+    }
+
+    .member-social-overlay {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .team-member-card:hover .member-social-overlay {
+        opacity: 1;
+    }
+
+    .member-social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .member-social-link:hover {
+        background: color-mix(in srgb, var(--accent-color), black 10%);
+        transform: scale(1.1);
+    }
+
+    .member-content {
+        padding: 30px;
+    }
+
+    .member-position {
+        color: var(--accent-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .member-expertise-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .expertise-tag {
+        display: inline-block;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        color: var(--accent-color);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    /* Team Stats */
+    .team-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 40px 0;
+    }
+
+    .team-stat-card {
+        background: var(--surface-color);
+        padding: 30px 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+        transition: all 0.3s ease;
+    }
+
+    .team-stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+    }
+
+    .team-stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .team-stat-label {
+        font-size: 0.9rem;
+        color: color-mix(in srgb, var(--default-color), transparent 25%);
+    }
+
+    /* Partnerships */
+    .partnership-card {
+        background: var(--surface-color);
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .partner-logo-item {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: color-mix(in srgb, var(--accent-color), transparent 95%);
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .partner-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        font-size: 24px;
+    }
+
+    .partner-info h5 {
+        color: var(--heading-color);
+        margin-bottom: 5px;
+    }
+
+    .partner-info p {
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+    .final-cta {
+        padding: 80px 0;
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%);
+    }
+
+    .bg-light {
+        background-color: var(--surface-color) !important;
+    }
+
+    /* Fix for shadow-sm class */
+    .border-0.shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-primary:hover {
+        background-color: color-mix(in srgb, var(--accent-color), black 10%);
+        border-color: color-mix(in srgb, var(--accent-color), black 10%);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-primary {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--accent-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-light {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+        border-color: var(--contrast-color);
+    }
+
+    .btn-light:hover {
+        background-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        border-color: color-mix(in srgb, var(--contrast-color), transparent 10%);
+        color: var(--accent-color);
+    }
+
+    .btn-outline-light {
+        border-color: var(--contrast-color);
+        color: var(--contrast-color);
+    }
+
+    .btn-outline-light:hover {
+        background-color: var(--contrast-color);
+        color: var(--accent-color);
+    }
+
+    .badge.bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .badge.bg-success {
+        background-color: color-mix(in srgb, #10b981, transparent 20%) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-white {
+        background-color: var(--contrast-color) !important;
+        color: var(--accent-color) !important;
+    }
+
+    @media (max-width: 768px) {
+        .team-hero {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .team-icon-wrapper {
+            margin-top: 40px;
+        }
+
+        .hero-actions .btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .hero-actions .btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .team-stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .member-image-container {
+            height: 250px;
+        }
+    }
+
+    /* Dark theme specific text colors */
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    .text-muted {
+        color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+    }
+
+    /* Ensure proper text contrast for all cards */
+    .card {
+        background-color: var(--surface-color) !important;
+        border-color: color-mix(in srgb, var(--default-color), transparent 90%) !important;
+    }
+
+    .card-body {
+        color: var(--default-color) !important;
+    }
+
+    .card-title,
+    .card-body h4,
+    .card-body h5 {
+        color: var(--heading-color) !important;
+    }
+
+    .card-text,
+    .card-body p {
+        color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    }
+
+    .lead {
+        color: color-mix(in srgb, var(--default-color), transparent 10%) !important;
+    }
+
+    /* Fix inline style overrides in HTML */
+    .team-hero,
+    .final-cta {
+        background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), black 20%) 100%) !important;
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+
+<main class="main">
+
+    <!-- Hero Section -->
+    <section class="team-hero section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8" data-aos="fade-right">
+                    <div class="hero-content text-white">
+                        <nav class="breadcrumbs-light mb-4">
+                            <ol>
+                                <li><a href="{% url 'core:index' %}" class="text-white-50">Home</a></li>
+                                <li><a href="#" class="text-white-50">About Us</a></li>
+                                <li class="current text-white">Our Team</li>
+                            </ol>
+                        </nav>
+                        <h1 class="display-4 fw-bold mb-4">Our Team</h1>
+                        <p class="lead mb-4">Our success is due in large part to the integrity and quality of our team.
+                            We are a team of established Telecom and IT professionals with decades of collective
+                            business experience and have backgrounds in both industry and entrepreneurship.</p>
+                        <div class="hero-actions">
+                            <a href="#team-members" class="btn btn-light btn-lg me-3">
+                                <i class="bi bi-people me-2"></i>Meet Our Experts
+                            </a>
+                            <a href="#team-stats" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-graph-up me-2"></i>Team Stats
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-left">
+                    <div class="team-icon-wrapper">
+                        <div class="team-icon-large">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div class="floating-badges">
+                            <span class="badge bg-white text-primary">Industry Veterans</span>
+                            <span class="badge bg-white text-primary mt-2">7+ Decades Experience</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="quick-stats section">
+        <div class="container">
+            <div class="row g-4" data-aos="fade-up">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">70+</div>
+                        <div class="stat-label">Years Combined Expertise</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">Fortune 100</div>
+                        <div class="stat-label">Industry Experience</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">Global</div>
+                        <div class="stat-label">Network Footprint</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-value">7+</div>
+                        <div class="stat-label">Decades in Telecom</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Introduction -->
+    <section class="team-introduction section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="section-header mb-5">
+                        <h2 class="mb-3">Industry Veterans with Fortune 100 Experience</h2>
+                        <div class="title-divider"></div>
+                    </div>
+                    <div class="overview-content">
+                        <p class="lead mb-4">Our team of professionals are Technology Industry veterans with over 7
+                            decades of combined expertise working for Fortune 100 Telecom industry Leaders.</p>
+                        <p>We bring to bear a deep understanding of ICT network requirements and vision, combining
+                            technical expertise with strategic business insight to deliver transformative solutions for
+                            our clients.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="service-visual">
+                        <div class="visual-card">
+                            <img src="{% static 'core/assets/img/about/about-3.jpg' %}" alt="Team Collaboration"
+                                class="img-fluid rounded-3 shadow">
+                            <!-- <div class="visual-overlay">
+                                <div class="overlay-content">
+                                    <h4>Collaborative Excellence</h4>
+                                    <p>Decades of combined expertise</p>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Members -->
+    <section id="team-members" class="team-members section bg-light">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Meet Our Technology Experts</h2>
+                <p class="lead">Industry veterans with decades of experience in Fortune 100 telecom and IT leadership
+                </p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4" data-aos="fade-up" data-aos-delay="100">
+                <!-- Senior Network Architect -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-member-card">
+                        <div class="member-image-container">
+                            <img src="{% static 'core/assets/img/person/profile-1.png' %}"
+                                alt="Senior Network Architect">
+                            <div class="member-social-overlay">
+                                <a href="#" class="member-social-link">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="member-content">
+                            <div class="member-position">Telecom Industry Leader</div>
+                            <h3 class="mb-3">Senior Network Architect</h3>
+                            <p class="mb-4">Over 25 years experience designing global networks for Fortune 100 telecom
+                                companies. Specialized in core network architecture and optimization.</p>
+                            <div class="member-expertise-tags">
+                                <span class="expertise-tag">Network Design</span>
+                                <span class="expertise-tag">Optimization</span>
+                                <span class="expertise-tag">Fortune 100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chief Information Security Officer -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-member-card">
+                        <div class="member-image-container">
+                            <img src="{% static 'core/assets/img/person/profile-2.png' %}"
+                                alt="Chief Information Security Officer">
+                            <div class="member-social-overlay">
+                                <a href="#" class="member-social-link">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="member-content">
+                            <div class="member-position">Cybersecurity Expert</div>
+                            <h3 class="mb-3">Chief Information Security Officer</h3>
+                            <p class="mb-4">15+ years in information security with expertise in threat protection,
+                                security infrastructure design, and compliance standards implementation.</p>
+                            <div class="member-expertise-tags">
+                                <span class="expertise-tag">Information Security</span>
+                                <span class="expertise-tag">Cybersecurity</span>
+                                <span class="expertise-tag">Compliance</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cloud Solutions Director -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-member-card">
+                        <div class="member-image-container">
+                            <img src="{% static 'core/assets/img/person/profile-3.png' %}"
+                                alt="Cloud Solutions Director">
+                            <div class="member-social-overlay">
+                                <a href="#" class="member-social-link">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="member-content">
+                            <div class="member-position">Digital Transformation Leader</div>
+                            <h3 class="mb-3">Cloud Solutions Director</h3>
+                            <p class="mb-4">Expert in cloud computing strategies, digital transformation, and helping
+                                organizations migrate to cloud-based infrastructure efficiently.</p>
+                            <div class="member-expertise-tags">
+                                <span class="expertise-tag">Cloud Computing</span>
+                                <span class="expertise-tag">Digital Transformation</span>
+                                <span class="expertise-tag">Migration</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Systems Integration Lead -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-member-card">
+                        <div class="member-image-container">
+                            <img src="{% static 'core/assets/img/person/profile-4.png' %}"
+                                alt="Systems Integration Lead">
+                            <div class="member-social-overlay">
+                                <a href="#" class="member-social-link">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="member-content">
+                            <div class="member-position">IT Systems Specialist</div>
+                            <h3 class="mb-3">Systems Integration Lead</h3>
+                            <p class="mb-4">Specialized in connecting diverse IT systems into cohesive solutions, with
+                                expertise in API integration and system architecture design.</p>
+                            <div class="member-expertise-tags">
+                                <span class="expertise-tag">Systems Integration</span>
+                                <span class="expertise-tag">API Design</span>
+                                <span class="expertise-tag">Architecture</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Deployment Manager -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-member-card">
+                        <div class="member-image-container">
+                            <img src="{% static 'core/assets/img/person/profile-5.png' %}"
+                                alt="Network Deployment Manager">
+                            <div class="member-social-overlay">
+                                <a href="#" class="member-social-link">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="member-content">
+                            <div class="member-position">Implementation Expert</div>
+                            <h3 class="mb-3">Network Deployment Manager</h3>
+                            <p class="mb-4">20+ years in network deployment and roll-out services, managing large-scale
+                                implementations across multiple continents.</p>
+                            <div class="member-expertise-tags">
+                                <span class="expertise-tag">Deployment</span>
+                                <span class="expertise-tag">Roll-Out</span>
+                                <span class="expertise-tag">Project Management</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Digital Archiving Specialist -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-member-card">
+                        <div class="member-image-container">
+                            <img src="{% static 'core/assets/img/person/profile-6.png' %}"
+                                alt="Digital Archiving Specialist">
+                            <div class="member-social-overlay">
+                                <a href="#" class="member-social-link">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="member-content">
+                            <div class="member-position">Document Management Expert</div>
+                            <h3 class="mb-3">Digital Archiving Specialist</h3>
+                            <p class="mb-4">Leading our partnership with Fortune Data and Square 9 since 2010, providing
+                                customized technologically integrated document management solutions.</p>
+                            <div class="member-expertise-tags">
+                                <span class="expertise-tag">Digital Archiving</span>
+                                <span class="expertise-tag">Document Management</span>
+                                <span class="expertise-tag">Cloud Storage</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Stats -->
+    <section id="team-stats" class="team-stats-section section">
+        <div class="container">
+            <div class="section-header text-center mb-5" data-aos="fade-up">
+                <h2>Team Expertise at a Glance</h2>
+                <p class="lead">Decades of collective experience and industry leadership</p>
+                <div class="title-divider mx-auto"></div>
+            </div>
+
+            <div class="team-stats-grid" data-aos="fade-up" data-aos-delay="100">
+                <div class="team-stat-card">
+                    <div class="team-stat-value">7+</div>
+                    <div class="team-stat-label">Decades of Combined Telecom Experience</div>
+                </div>
+                <div class="team-stat-card">
+                    <div class="team-stat-value">Fortune 100</div>
+                    <div class="team-stat-label">Background with Industry Leaders</div>
+                </div>
+                <div class="team-stat-card">
+                    <div class="team-stat-value">Global</div>
+                    <div class="team-stat-label">Project Implementation Experience</div>
+                </div>
+                <div class="team-stat-card">
+                    <div class="team-stat-value">100%</div>
+                    <div class="team-stat-label">Client Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnerships -->
+    <section class="partnership-section section bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="partnership-card">
+                        <h3 class="mb-4">Strategic Partnerships</h3>
+                        <p class="lead mb-4">AthenaNG Consulting in partnership with Fortune Data and Square 9 in
+                            Connecticut, USA, has provided Document Management (Digital Archiving) solutions since 2010.
+                        </p>
+                        <p>Together we present a customized technologically integrated approach created to promote
+                            efficiency in your business operations.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="partners-list mt-4 mt-lg-0">
+                        <div class="partner-logo-item">
+                            <div class="partner-icon">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <div class="partner-info">
+                                <h5 class="mb-1">Fortune Data</h5>
+                                <p class="mb-0">Document Management Solutions</p>
+                            </div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-icon">
+                                <i class="bi bi-square"></i>
+                            </div>
+                            <div class="partner-info">
+                                <h5 class="mb-1">Square 9</h5>
+                                <p class="mb-0">Digital Archiving Technology</p>
+                            </div>
+                        </div>
+                        <div class="partner-info mt-4">
+                            <p class="text-muted mb-0"><small>Partnership established since 2010, delivering integrated
+                                    document management solutions</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta section">
+        <div class="container">
+            <div class="row align-items-center" data-aos="fade-up">
+                <div class="col-lg-8">
+                    <div class="cta-content text-white">
+                        <h2 class="mb-3">Ready to Work with Our Expert Team?</h2>
+                        <p class="lead mb-4">Let our experienced professionals help you transform your technology
+                            infrastructure with cutting-edge solutions backed by decades of Fortune 100 experience.</p>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-telephone me-3"></i>
+                                <span>305-407-9223</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope me-3"></i>
+                                <span>info@athenang.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'core:index' %}#contact" class="btn btn-light btn-lg px-5">
+                        <i class="bi bi-chat-left-text me-2"></i>Contact Our Team
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

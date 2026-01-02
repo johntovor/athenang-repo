@@ -1,0 +1,83 @@
+{% load static %}
+
+<footer id="footer" class="footer">
+
+    <div class="container footer-top">
+        <div class="row gy-4">
+            <div class="col-lg-4 col-md-12 footer-about">
+                <a href="{% url 'core:index' %}" class="logo d-flex align-items-center">
+                    <span class="sitename">AthenaNG Consulting</span>
+                </a>
+                <p>Technology consulting company with core focus on Information technology and Mobile solutions. We
+                    deliver innovative solutions that enhance efficiency, improve quality of service, and significantly
+                    reduce total cost of ownership.</p>
+                <div class="social-links d-flex mt-4">
+                    <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i
+                            class="bi bi-linkedin"></i></a>
+                    <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i
+                            class="bi bi-twitter-x"></i></a>
+                    <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i
+                            class="bi bi-facebook"></i></a>
+                    <a href="mailto:info@athenang.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-6 footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'core:index' %}">Home</a></li>
+                    <li><a href="{% url 'core:our-team' %}">Our Team</a></li>
+                    <li><a href="{% url 'core:services' %}">Services</a></li>
+                    <li><a href="{% url 'core:contact-us' %}">Contact Us</a></li>
+                    <li><a href="{% url 'core:careers' %}">Careers</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-6 footer-links">
+                <h4>Our Services</h4>
+                <ul>
+                    <li><a href="{% url 'core:service-details' service_slug='network-design' %}">Network Design &
+                            Optimization</a></li>
+                    <li><a href="{% url 'core:service-details' service_slug='network-deployment' %}">Network
+                            Deployment</a></li>
+                    <li><a href="{% url 'core:service-details' service_slug='systems-integration' %}">Systems
+                            Integration</a></li>
+                    <li><a href="{% url 'core:service-details' service_slug='information-security' %}">Information
+                            Security</a></li>
+                    <li><a href="{% url 'core:service-details' service_slug='cloud-computing' %}">Cloud Computing</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+                <h4>Contact Us</h4>
+                <p><strong>Headquarters:</strong></p>
+                <p>2045 Biscayne Blvd Ste# 178</p>
+                <p>Miami, FL 33137</p>
+                <p>United States</p>
+                <div class="contact-info mt-4">
+                    <p><strong><i class="bi bi-telephone me-2"></i>Phone:</strong>
+                        <span><a href="tel:305-407-9223">305-407-9223</a></span>
+                    </p>
+                    <p><strong><i class="bi bi-envelope me-2"></i>Email:</strong>
+                        <span><a href="mailto:info@athenang.com">info@athenang.com</a></span>
+                    </p>
+                    <p><strong><i class="bi bi-globe me-2"></i>Website:</strong>
+                        <span>www.athenang.com</span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+        <p>&copy; <span>{% now "Y" %}</span> <strong class="px-1 sitename">AthenaNG Consulting.</strong> <span>All
+                Rights Reserved.</span></p>
+        <div class="footer-bottom-links mt-2">
+            <a href="{% url 'core:privacy-policy' %}" class="me-3">Privacy Policy</a>
+            <a href="{% url 'core:terms-of-service' %}" class="me-3">Terms of Service</a>
+        </div>
+    </div>
+
+</footer>

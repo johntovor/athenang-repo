@@ -1,0 +1,499 @@
+{% extends 'base-core.html' %}
+
+{% load static %}
+
+{% block title %}Terms of Service{% endblock title %}
+
+{% block head %}
+<style>
+    /* Custom Styles for Terms of Service */
+    .terms-hero {
+        padding: 80px 0 40px;
+        background: var(--surface-color);
+        text-align: center;
+    }
+
+    .last-updated {
+        color: var(--accent-color);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .terms-hero h2 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: var(--heading-color);
+    }
+
+    .terms-hero p {
+        font-size: 1.1rem;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .terms-content {
+        padding: 40px 0;
+    }
+
+    .content-section {
+        margin-bottom: 40px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .content-section:last-child {
+        border-bottom: none;
+    }
+
+    .content-section h3 {
+        color: var(--heading-color);
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+    }
+
+    .content-section p {
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+        line-height: 1.7;
+        margin-bottom: 15px;
+    }
+
+    .list-items {
+        margin: 20px 0;
+        padding-left: 20px;
+    }
+
+    .list-items li {
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+        line-height: 1.7;
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 25px;
+    }
+
+    .list-items li:before {
+        content: "•";
+        color: var(--accent-color);
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+        font-size: 1.2rem;
+    }
+
+    .info-box,
+    .alert-box,
+    .notice-box {
+        background: color-mix(in srgb, var(--accent-color), transparent 95%);
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid var(--accent-color);
+        margin: 20px 0;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .info-box i,
+    .alert-box i,
+    .notice-box i {
+        color: var(--accent-color);
+        font-size: 1.2rem;
+        margin-right: 15px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .alert-box {
+        background: color-mix(in srgb, #f59e0b, transparent 95%);
+        border-left-color: #f59e0b;
+    }
+
+    .alert-box i {
+        color: #f59e0b;
+    }
+
+    .notice-box {
+        background: color-mix(in srgb, #10b981, transparent 95%);
+        border-left-color: #10b981;
+    }
+
+    .notice-box i {
+        color: #10b981;
+    }
+
+    .prohibited-list {
+        margin: 20px 0;
+    }
+
+    .prohibited-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .prohibited-item:last-child {
+        border-bottom: none;
+    }
+
+    .prohibited-item i {
+        color: #ef4444;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    .prohibited-item span {
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+    }
+
+    .disclaimer-box {
+        background: color-mix(in srgb, var(--surface-color), transparent 50%);
+        padding: 25px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+    }
+
+    .disclaimer-box ul {
+        margin: 15px 0 0 20px;
+        padding-left: 20px;
+    }
+
+    .disclaimer-box li {
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+        line-height: 1.7;
+        margin-bottom: 8px;
+        position: relative;
+    }
+
+    .disclaimer-box li:before {
+        content: "•";
+        color: var(--accent-color);
+        font-weight: bold;
+        position: absolute;
+        left: -15px;
+    }
+
+    .terms-contact {
+        background: var(--surface-color);
+        padding: 50px;
+        border-radius: 12px;
+        margin-top: 50px;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .contact-box {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .contact-icon {
+        width: 70px;
+        height: 70px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border: 2px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .contact-icon i {
+        font-size: 30px;
+        color: var(--accent-color);
+    }
+
+    .contact-content h4 {
+        color: var(--heading-color);
+        margin-bottom: 10px;
+    }
+
+    .contact-link {
+        display: inline-block;
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        padding: 10px 25px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .contact-link:hover {
+        background: color-mix(in srgb, var(--accent-color), black 10%);
+        transform: translateY(-2px);
+    }
+
+    .service-reference {
+        background: color-mix(in srgb, var(--surface-color), transparent 30%);
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+    }
+
+    @media (max-width: 768px) {
+        .terms-hero {
+            padding: 60px 0 30px;
+        }
+
+        .terms-hero h2 {
+            font-size: 2rem;
+        }
+
+        .terms-contact {
+            padding: 30px 20px;
+        }
+
+        .contact-box {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .contact-icon {
+            margin-bottom: 15px;
+        }
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+<main class="main">
+
+    <!-- Terms Of Service Section -->
+    <section id="terms-of-service" class="terms-of-service section">
+
+        <div class="container" data-aos="fade-up">
+            <!-- Page Header -->
+            <div class="terms-hero" data-aos="fade-up">
+                <span class="last-updated">Effective Date: {% now "F j, Y" %}</span>
+                <h2>Terms of Service</h2>
+                <p>These Terms of Service govern your use of AthenaNG Consulting's technology solutions and services.
+                    Please read them carefully.</p>
+            </div>
+
+            <!-- Content -->
+            <div class="terms-content" data-aos="fade-up" data-aos-delay="100">
+                <!-- Agreement Section -->
+                <div id="agreement" class="content-section">
+                    <h3>1. Agreement to Terms</h3>
+                    <p>By accessing AthenaNG Consulting's website, engaging our services, or using our technology
+                        solutions, you agree to be bound by these Terms of Service and all applicable laws and
+                        regulations. These terms apply to all users, clients, visitors, and others who access or use our
+                        technology consulting services.</p>
+
+                    <div class="service-reference">
+                        <p><strong>Service Scope:</strong> AthenaNG Consulting provides technology consulting services
+                            including Network Design & Optimization, Network Deployment, Systems Integration,
+                            Information Security, Cloud Computing, and Digital Archiving solutions as detailed on our
+                            website and service agreements.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <i class="bi bi-info-circle"></i>
+                        <p>These terms apply to all services provided by AthenaNG Consulting, whether accessed through
+                            our website, direct engagement, or partnership arrangements.</p>
+                    </div>
+                </div>
+
+                <!-- Service Engagement -->
+                <div id="service-engagement" class="content-section">
+                    <h3>2. Service Engagement and Delivery</h3>
+                    <p>2.1 All professional services will be governed by separate service agreements that detail scope,
+                        deliverables, timelines, and compensation.</p>
+                    <p>2.2 AthenaNG Consulting delivers technology solutions with the goal of improving quality of
+                        service, enhancing efficiency, and significantly reducing total cost of ownership for our
+                        clients.</p>
+                    <p>2.3 We provide emerging and cutting edge solutions required to operate, deploy and expand
+                        networks quickly and efficiently in the most feature-rich and cost-effective way.</p>
+
+                    <div class="list-items">
+                        <li>Services are provided by industry veterans with over 7 decades of combined expertise</li>
+                        <li>Our team consists of Technology Industry veterans with Fortune 100 Telecom experience</li>
+                        <li>We bring deep understanding of ICT network requirements and vision</li>
+                        <li>Services may be delivered through partnerships with specialized providers like Fortune Data
+                            and Square 9</li>
+                    </div>
+                </div>
+
+                <!-- Intellectual Property -->
+                <div id="intellectual-property" class="content-section">
+                    <h3>3. Intellectual Property Rights</h3>
+                    <p>3.1 All technology solutions, methodologies, and proprietary tools developed by AthenaNG
+                        Consulting remain our exclusive property unless otherwise specified in a service agreement.</p>
+                    <p>3.2 Client-specific implementations and customizations may be governed by separate intellectual
+                        property agreements.</p>
+
+                    <div class="list-items">
+                        <li>Network designs, optimization strategies, and deployment methodologies are proprietary</li>
+                        <li>Digital archiving solutions leverage our partnership with Fortune Data and Square 9 since
+                            2010</li>
+                        <li>Information security frameworks and audit methodologies are protected intellectual property
+                        </li>
+                        <li>Cloud computing strategies and migration methodologies are proprietary</li>
+                    </div>
+                </div>
+
+                <!-- Confidentiality -->
+                <div id="confidentiality" class="content-section">
+                    <h3>4. Confidentiality and Data Protection</h3>
+                    <p>4.1 Both parties agree to maintain the confidentiality of all proprietary information exchanged
+                        during service engagement.</p>
+                    <p>4.2 For services involving data processing (such as Digital Archiving or Information Security),
+                        separate data processing agreements will be executed.</p>
+
+                    <div class="alert-box">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <div class="alert-content">
+                            <h5>Data Security Commitment</h5>
+                            <p>As Information Security experts, we implement enterprise-grade security measures
+                                including encryption, access controls, and regular security assessments to protect
+                                client data.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Terms -->
+                <div id="payment" class="content-section">
+                    <h3>5. Payment Terms and Billing</h3>
+                    <p>5.1 Payment terms will be specified in individual service agreements and may vary based on
+                        service type and scope.</p>
+                    <p>5.2 Invoices are payable within terms specified, with late payments subject to applicable fees.
+                    </p>
+                    <p>5.3 All fees are quoted exclusive of applicable taxes, which will be added to invoices where
+                        required by law.</p>
+                </div>
+
+                <!-- Service Warranties -->
+                <div id="warranties" class="content-section">
+                    <h3>6. Service Warranties and Limitations</h3>
+                    <p>6.1 AthenaNG Consulting warrants that services will be performed in a professional manner
+                        consistent with industry standards.</p>
+                    <p>6.2 We do not guarantee specific outcomes or performance metrics unless explicitly stated in a
+                        service level agreement (SLA).</p>
+
+                    <div class="disclaimer-box">
+                        <p>Service performance depends on various factors including:</p>
+                        <ul>
+                            <li>Client infrastructure and existing technology environment</li>
+                            <li>Timely provision of required information and access</li>
+                            <li>External factors beyond our control (third-party services, internet connectivity, etc.)
+                            </li>
+                            <li>Accuracy and completeness of client-provided requirements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Limitation of Liability -->
+                <div id="limitation" class="content-section">
+                    <h3>7. Limitation of Liability</h3>
+                    <p>7.1 To the maximum extent permitted by law, AthenaNG Consulting's total liability for any claim
+                        arising from our services shall not exceed the fees paid by the client for the specific services
+                        giving rise to the claim.</p>
+                    <p>7.2 We shall not be liable for any indirect, punitive, incidental, special, consequential, or
+                        exemplary damages, including loss of profits, data, or business opportunities.</p>
+                </div>
+
+                <!-- Prohibited Activities -->
+                <div id="prohibited" class="content-section">
+                    <h3>8. Client Responsibilities and Prohibitions</h3>
+                    <p>Clients agree not to:</p>
+                    <div class="prohibited-list">
+                        <div class="prohibited-item">
+                            <i class="bi bi-x-circle"></i>
+                            <span>Reverse engineer or attempt to extract proprietary methodologies</span>
+                        </div>
+                        <div class="prohibited-item">
+                            <i class="bi bi-x-circle"></i>
+                            <span>Resell or redistribute AthenaNG's services without written authorization</span>
+                        </div>
+                        <div class="prohibited-item">
+                            <i class="bi bi-x-circle"></i>
+                            <span>Use services for illegal activities or in violation of applicable laws</span>
+                        </div>
+                        <div class="prohibited-item">
+                            <i class="bi bi-x-circle"></i>
+                            <span>Share confidential login credentials or access to secure systems</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Termination -->
+                <div id="termination" class="content-section">
+                    <h3>9. Termination and Suspension</h3>
+                    <p>9.1 Either party may terminate service agreements as specified in the individual agreement terms.
+                    </p>
+                    <p>9.2 We reserve the right to suspend services immediately for non-payment, breach of terms, or
+                        security concerns.</p>
+                    <p>9.3 Upon termination, clients remain responsible for payment for services rendered and any early
+                        termination fees specified in agreements.</p>
+                </div>
+
+                <!-- Governing Law -->
+                <div id="governing-law" class="content-section">
+                    <h3>10. Governing Law and Dispute Resolution</h3>
+                    <p>10.1 These Terms shall be governed by and construed in accordance with the laws of the State of
+                        Florida, United States.</p>
+                    <p>10.2 Any disputes arising from these Terms shall first be attempted to be resolved through good
+                        faith negotiation between the parties.</p>
+                    <p>10.3 If negotiation fails, disputes shall be resolved through binding arbitration in Miami,
+                        Florida, in accordance with the rules of the American Arbitration Association.</p>
+                </div>
+
+                <!-- Partnership Provisions -->
+                <div id="partnerships" class="content-section">
+                    <h3>11. Partnership Services</h3>
+                    <p>11.1 Certain services, particularly Document Management (Digital Archiving), are delivered in
+                        partnership with Fortune Data and Square 9.</p>
+                    <p>11.2 For partnership services, additional terms from our partners may apply and will be provided
+                        in separate documentation.</p>
+                    <p>11.3 AthenaNG Consulting serves as the primary point of contact and assumes responsibility for
+                        coordinating all partnership-delivered services.</p>
+                </div>
+
+                <!-- Changes -->
+                <div id="changes" class="content-section">
+                    <h3>12. Changes to Terms</h3>
+                    <p>12.1 We reserve the right to modify or replace these Terms at any time. Material changes will be
+                        communicated through our website or direct notification to active clients.</p>
+                    <p>12.2 Continued use of our services after changes become effective constitutes acceptance of the
+                        revised terms.</p>
+
+                    <div class="notice-box">
+                        <i class="bi bi-bell"></i>
+                        <p>We encourage regular review of these Terms, particularly before engaging new services or when
+                            notified of updates.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="terms-contact" data-aos="fade-up" data-aos-delay="200">
+                <div class="contact-box">
+                    <div class="contact-icon">
+                        <i class="bi bi-envelope"></i>
+                    </div>
+                    <div class="contact-content">
+                        <h4>Questions About Our Terms?</h4>
+                        <p>If you have any questions about these Terms of Service or our technology consulting services,
+                            please contact our legal department.</p>
+                        <a href="mailto:info@athenang.com" class="contact-link">Contact Legal Department</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /Terms Of Service Section -->
+
+</main>
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

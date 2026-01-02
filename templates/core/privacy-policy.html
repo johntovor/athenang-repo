@@ -1,0 +1,513 @@
+{% extends 'base-core.html' %}
+
+{% load static %}
+
+{% block title %}Privacy Policy{% endblock title %}
+
+{% block head %}
+<style>
+    /* Custom Styles for Privacy Policy */
+    .privacy-hero {
+        padding: 80px 0 40px;
+        background: var(--surface-color);
+        text-align: center;
+    }
+
+    .last-updated {
+        color: var(--accent-color);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .privacy-hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: var(--heading-color);
+    }
+
+    .privacy-hero p {
+        font-size: 1.1rem;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .privacy-content {
+        padding: 40px 0;
+    }
+
+    .content-section {
+        margin-bottom: 40px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .content-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .content-section h2 {
+        color: var(--heading-color);
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+    }
+
+    .content-section h3 {
+        color: var(--heading-color);
+        font-size: 1.4rem;
+        margin: 25px 0 15px;
+    }
+
+    .content-section p {
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+        line-height: 1.7;
+        margin-bottom: 15px;
+    }
+
+    .content-section ul {
+        margin: 20px 0;
+        padding-left: 20px;
+    }
+
+    .content-section li {
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+        line-height: 1.7;
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 25px;
+    }
+
+    .content-section li:before {
+        content: "•";
+        color: var(--accent-color);
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+        font-size: 1.2rem;
+    }
+
+    .privacy-contact {
+        background: var(--surface-color);
+        padding: 50px;
+        border-radius: 12px;
+        margin-top: 50px;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    }
+
+    .privacy-contact h2 {
+        color: var(--heading-color);
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .contact-details p {
+        margin-bottom: 10px;
+        color: color-mix(in srgb, var(--default-color), transparent 20%);
+    }
+
+    .contact-details strong {
+        color: var(--heading-color);
+        margin-right: 10px;
+    }
+
+    .contact-details a {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .contact-details a:hover {
+        color: color-mix(in srgb, var(--accent-color), black 20%);
+        text-decoration: underline;
+    }
+
+    .highlight-box {
+        background: color-mix(in srgb, var(--surface-color), transparent 50%);
+        border-left: 4px solid var(--accent-color);
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .service-specific {
+        background: color-mix(in srgb, var(--surface-color), transparent 30%);
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+    }
+
+    .info-box,
+    .alert-box,
+    .notice-box {
+        background: color-mix(in srgb, var(--accent-color), transparent 95%);
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid var(--accent-color);
+        margin: 20px 0;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .info-box i,
+    .alert-box i,
+    .notice-box i {
+        color: var(--accent-color);
+        font-size: 1.2rem;
+        margin-right: 15px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .alert-box {
+        background: color-mix(in srgb, #f59e0b, transparent 95%);
+        border-left-color: #f59e0b;
+    }
+
+    .alert-box i {
+        color: #f59e0b;
+    }
+
+    .notice-box {
+        background: color-mix(in srgb, #10b981, transparent 95%);
+        border-left-color: #10b981;
+    }
+
+    .notice-box i {
+        color: #10b981;
+    }
+
+    .contact-box {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .contact-icon {
+        width: 70px;
+        height: 70px;
+        background: color-mix(in srgb, var(--accent-color), transparent 90%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border: 2px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    }
+
+    .contact-icon i {
+        font-size: 30px;
+        color: var(--accent-color);
+    }
+
+    .contact-content h4 {
+        color: var(--heading-color);
+        margin-bottom: 10px;
+    }
+
+    .contact-link {
+        display: inline-block;
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        padding: 10px 25px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .contact-link:hover {
+        background: color-mix(in srgb, var(--accent-color), black 10%);
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .privacy-hero {
+            padding: 60px 0 30px;
+        }
+
+        .privacy-hero h1 {
+            font-size: 2rem;
+        }
+
+        .privacy-contact {
+            padding: 30px 20px;
+        }
+
+        .contact-box {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .contact-icon {
+            margin-bottom: 15px;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+        }
+
+        .content-section h2 {
+            font-size: 1.5rem;
+        }
+
+        .content-section h3 {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+<main class="main">
+
+    <!-- Privacy Section -->
+    <section id="privacy" class="privacy section">
+
+        <div class="container" data-aos="fade-up">
+            <!-- Header -->
+            <div class="privacy-hero" data-aos="fade-up">
+                <span class="last-updated">Effective Date: {% now "F j, Y" %}</span>
+                <h1>Privacy Policy</h1>
+                <p>At AthenaNG Consulting, we are committed to protecting your privacy and
+                    ensuring the security of your personal information. This Privacy Policy outlines how we collect,
+                    use, process, and disclose information when you engage with our technology consulting services,
+                    visit our website, or interact with us in any capacity.</p>
+                <p>As a Technology consulting company focused on Information technology and
+                    Mobile solutions, we understand the importance of data security and confidentiality in all our
+                    operations.</p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="privacy-content" data-aos="fade-up" data-aos-delay="100">
+                <!-- Introduction -->
+                <div class="content-section">
+                    <h2>1. Introduction</h2>
+                    <p>AthenaNG Consulting ("we," "us," or "our") is a Technology consulting company with a core focus
+                        on Information technology and Mobile solutions. We provide emerging and cutting edge solutions
+                        required to operate, deploy and expand networks quickly and efficiently.</p>
+                    <p>When you engage with our services, you trust us with your information. We take this
+                        responsibility seriously and are committed to protecting your information and being transparent
+                        about our data practices.</p>
+
+                    <div class="highlight-box">
+                        <p><strong>Our Commitment:</strong> We leverage our expertise and best-in-class execution to
+                            deliver quality, integrity, and performance to our clients and partners in all aspects of
+                            our operations, including data protection and privacy.</p>
+                    </div>
+                </div>
+
+                <!-- Information Collection -->
+                <div class="content-section">
+                    <h2>2. Information We Collect</h2>
+                    <p>We collect information necessary to provide our technology consulting services, communicate with
+                        clients, and improve our offerings.</p>
+
+                    <h3>2.1 Information You Provide</h3>
+                    <p>When you contact us, request services, or engage with our team, you may provide:</p>
+                    <ul>
+                        <li>Contact information (name, email, phone number, company details)</li>
+                        <li>Business requirements and project specifications</li>
+                        <li>Network infrastructure information for consultation purposes</li>
+                        <li>Documentation related to digital archiving and management solutions</li>
+                        <li>Payment and billing information for service transactions</li>
+                        <li>Resume and career information for employment opportunities</li>
+                    </ul>
+
+                    <h3>2.2 Information We Collect Automatically</h3>
+                    <p>When you visit our website or interact with our digital platforms:</p>
+                    <ul>
+                        <li>Device and browser information</li>
+                        <li>IP address and approximate location</li>
+                        <li>Website usage patterns and analytics data</li>
+                        <li>Cookies and similar technologies (as described below)</li>
+                    </ul>
+
+                    <div class="service-specific">
+                        <h4>Service-Specific Data Collection</h4>
+                        <p>For specific services like Digital Archiving, Network Audits, and Information Security, we
+                            may collect:</p>
+                        <ul>
+                            <li>Network configuration and security data for audits and compliance</li>
+                            <li>Document metadata for digital archiving solutions</li>
+                            <li>Security assessment data for information security services</li>
+                            <li>Cloud infrastructure information for migration planning</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Use of Information -->
+                <div class="content-section">
+                    <h2>3. How We Use Your Information</h2>
+                    <p>We use the information we collect to provide, maintain, and improve our services, and to enhance
+                        your experience with AthenaNG Consulting:</p>
+                    <ul>
+                        <li>To provide technology consulting services including Network Design, Deployment, Systems
+                            Integration, and Cloud Computing</li>
+                        <li>To deliver customized solutions for your specific business needs</li>
+                        <li>To communicate with you about services, updates, and opportunities</li>
+                        <li>To process transactions and manage billing</li>
+                        <li>To improve our services through analysis and feedback</li>
+                        <li>To ensure security and prevent fraud</li>
+                        <li>To comply with legal and regulatory requirements</li>
+                        <li>To manage partnerships (including with Fortune Data and Square 9 for Document Management
+                            solutions)</li>
+                    </ul>
+                </div>
+
+                <!-- Information Sharing -->
+                <div class="content-section">
+                    <h2>4. Information Sharing and Disclosure</h2>
+                    <p>We do not sell your personal information. We may share your information only in the following
+                        circumstances:</p>
+
+                    <h3>4.1 Service Partners and Providers</h3>
+                    <p>We may share information with trusted partners who assist us in delivering our services:</p>
+                    <ul>
+                        <li>Fortune Data and Square 9 for Document Management (Digital Archiving) solutions</li>
+                        <li>Cloud service partners like Amazon, Microsoft, and Google for digital archiving solutions
+                        </li>
+                        <li>Technology vendors necessary for network deployment and optimization</li>
+                    </ul>
+
+                    <h3>4.2 Legal Requirements</h3>
+                    <p>We may disclose information when required by law or to protect our rights:</p>
+                    <ul>
+                        <li>To comply with legal obligations or regulatory requirements</li>
+                        <li>To enforce our agreements and policies</li>
+                        <li>To protect the security of our systems and clients</li>
+                        <li>To prevent fraud or illegal activities</li>
+                    </ul>
+
+                    <h3>4.3 Business Transfers</h3>
+                    <p>In the event of a merger, acquisition, or sale of assets, your information may be transferred as
+                        part of that transaction.</p>
+                </div>
+
+                <!-- Data Security -->
+                <div class="content-section">
+                    <h2>5. Data Security</h2>
+                    <p>As Information Security experts, we implement robust security measures to protect your
+                        information:</p>
+                    <ul>
+                        <li>Enterprise-grade encryption for data in transit and at rest</li>
+                        <li>Secure network infrastructure following industry best practices</li>
+                        <li>Regular security assessments and penetration testing</li>
+                        <li>Access controls and authentication mechanisms</li>
+                        <li>Employee training on data protection and privacy</li>
+                        <li>Regular security audits and compliance monitoring</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><strong>Our Security Approach:</strong> We adopt a multi-faceted prevention strategy
+                            combining proactive protection and state-of-the-art detection tools to ensure 101% security
+                            solutions for all client data.</p>
+                    </div>
+                </div>
+
+                <!-- Data Retention -->
+                <div class="content-section">
+                    <h2>6. Data Retention</h2>
+                    <p>We retain your information only as long as necessary for the purposes outlined in this policy:
+                    </p>
+                    <ul>
+                        <li>Client project data: Retained for the duration of our engagement and for a reasonable period
+                            thereafter for service continuity</li>
+                        <li>Business contact information: Retained while you are an active client or prospect</li>
+                        <li>Digital archiving data: Managed according to client-specific retention policies</li>
+                        <li>Legal and compliance data: Retained as required by applicable laws and regulations</li>
+                    </ul>
+                </div>
+
+                <!-- Your Rights -->
+                <div class="content-section">
+                    <h2>7. Your Rights and Choices</h2>
+                    <p>Depending on your location, you may have certain rights regarding your personal information:</p>
+                    <ul>
+                        <li><strong>Access:</strong> Request access to your personal information</li>
+                        <li><strong>Correction:</strong> Request correction of inaccurate or incomplete information</li>
+                        <li><strong>Deletion:</strong> Request deletion of your information in certain circumstances
+                        </li>
+                        <li><strong>Restriction:</strong> Request restriction of processing of your information</li>
+                        <li><strong>Objection:</strong> Object to processing of your information</li>
+                        <li><strong>Portability:</strong> Request transfer of your information to another organization
+                        </li>
+                    </ul>
+
+                    <p>To exercise these rights, please contact us using the information provided below.</p>
+                </div>
+
+                <!-- Cookies and Tracking -->
+                <div class="content-section">
+                    <h2>8. Cookies and Tracking Technologies</h2>
+                    <p>We use cookies and similar technologies to enhance your experience on our website:</p>
+                    <ul>
+                        <li><strong>Essential Cookies:</strong> Necessary for website functionality</li>
+                        <li><strong>Analytics Cookies:</strong> Help us understand how visitors use our site</li>
+                        <li><strong>Preference Cookies:</strong> Remember your settings and preferences</li>
+                        <li><strong>Marketing Cookies:</strong> Used for marketing and advertising purposes</li>
+                    </ul>
+                    <p>You can control cookies through your browser settings. However, disabling certain cookies may
+                        affect website functionality.</p>
+                </div>
+
+                <!-- International Data Transfers -->
+                <div class="content-section">
+                    <h2>9. International Data Transfers</h2>
+                    <p>As a global technology consulting company, we may transfer your information to countries outside
+                        your country of residence, including the United States. When we do so, we implement appropriate
+                        safeguards to ensure your information receives adequate protection.</p>
+                </div>
+
+                <!-- Policy Updates -->
+                <div class="content-section">
+                    <h2>10. Changes to This Policy</h2>
+                    <p>We may update this Privacy Policy periodically to reflect changes in our practices or legal
+                        requirements. We will notify you of significant changes by posting the updated policy on our
+                        website and updating the effective date.</p>
+                    <p>We encourage you to review this Privacy Policy periodically to stay informed about how we protect
+                        your information.</p>
+                </div>
+
+                <!-- Children's Privacy -->
+                <div class="content-section">
+                    <h2>11. Children's Privacy</h2>
+                    <p>Our services are not directed to children under the age of 16. We do not knowingly collect
+                        personal information from children under 16. If we become aware that we have collected personal
+                        information from a child under 16, we will take steps to delete such information.</p>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="privacy-contact" data-aos="fade-up" data-aos-delay="200">
+                <div class="contact-box">
+                    <div class="contact-icon">
+                        <i class="bi bi-envelope"></i>
+                    </div>
+                    <div class="contact-content">
+                        <h4>Questions About Our Privacy Policy?</h4>
+                        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data
+                            practices,
+                            please contact our Privacy Officer.</p>
+                        <a href="mailto:info@athenang.com" class="contact-link">Contact Privacy Officer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /Privacy Section -->
+
+</main>
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}
